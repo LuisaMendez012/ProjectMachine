@@ -721,17 +721,106 @@
 
     </main>
 
-    <div class="cta-section">
-        <div class="cta-text">
-            <h3>Continuar al siguiente paso</h3>
-            <p>Evaluación detallada del modelo ganador</p>
-        </div>
-        <div class="cta-nav">
-            <a href="/entendimiento" class="btn btn-outline">← Fase 1</a>
-            <a href="/evaluacion" class="btn btn-primary">Fase 3 — Evaluación</a>
-        </div>
+<div class="cta-section">
+    <div class="cta-text">
+        <h3>Continuar al siguiente paso</h3>
+        <p>Evaluación detallada del modelo ganador</p>
     </div>
 
+    <div class="cta-nav">
+        <a href="/entendimiento" class="btn btn-outline">
+            ← Fase 1
+        </a>
+
+        <a href="/evaluacion" class="btn btn-primary">
+            Fase 3 — Evaluación
+        </a>
+    </div>
+</div>
+
+<div class="section">
+    <div class="section-inner">
+
+        <div class="section-header">
+            <div class="section-number">08</div>
+            <h2>Ejemplo de Ingreso de Datos</h2>
+        </div>
+
+        <p>
+            Valores recomendados para la variable clima:
+        </p>
+
+        <div class="model-list">
+
+            <div class="model-item">
+                <div class="model-icon">☀️</div>
+                Soleado — 1.0
+            </div>
+
+            <div class="model-item">
+                <div class="model-icon">☁️</div>
+                Nublado — 0.7
+            </div>
+
+            <div class="model-item">
+                <div class="model-icon">🌧️</div>
+                Lluvia — 0.3
+            </div>
+
+            <div class="model-item">
+                <div class="model-icon">⛈️</div>
+                Tormenta — 0.1
+            </div>
+
+        </div>
+
+        <form method="POST" style="margin-top: 2rem;">
+
+            <p><strong>Clima:</strong></p>
+            <input type="number" step="any" name="clima" required>
+
+            <br><br>
+
+            <p><strong>Hora:</strong></p>
+            <input type="number" step="any" name="hora" required>
+
+            <br><br>
+
+            <p><strong>Zona:</strong></p>
+            <input type="number" step="any" name="zona" required>
+
+            <br><br>
+
+            <button type="submit" class="btn btn-primary">
+                Predecir Ocupación
+            </button>
+
+        </form>
+
+        {% if resultado %}
+        <div class="result-box" style="margin-top: 2rem;">
+
+            <div class="result-score">
+                <span class="big-num">
+                    {{ resultado }}
+                </span>
+
+                <span class="score-label">
+                    Predicción
+                </span>
+            </div>
+
+            <div class="result-divider"></div>
+
+            <p class="result-desc">
+                Resultado generado por el modelo de machine learning.
+            </p>
+
+        </div>
+        {% endif %}
+
+    </div>
+</div>
 </div>
 </body>
 </html>
