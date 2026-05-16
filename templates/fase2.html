@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fase 2 - Modelo</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+<h1>Fase 2: Ingeniería de Datos y Modelado</h1>
+
+<h2>1. Preparación de los Datos</h2>
+<p>
+En esta fase se realizan procesos fundamentales para preparar los datos antes de aplicar el modelo:
+</p>
+
+<ul>
+    <li>Limpieza de datos (eliminación de errores y duplicados)</li>
+    <li>Manejo de valores nulos</li>
+    <li>Transformación de variables</li>
+    <li>Normalización de datos</li>
+</ul>
+
+<hr>
+
+<h2>2. Ingeniería de Características</h2>
+<p>Se crean nuevas variables para mejorar el modelo:</p>
+
+<ul>
+    <li>Hora del día</li>
+    <li>Día de la semana</li>
+    <li>Condiciones climáticas</li>
+    <li>Zona geográfica</li>
+</ul>
+
+<hr>
+
+<h2>3. Modelo de Machine Learning</h2>
+<p>
+Se implementa un modelo predictivo basado en una combinación lineal de variables, similar a una red neuronal simple.
+</p>
+
+<p>
+El modelo calcula la ocupación utilizando pesos asociados a cada variable de entrada.
+</p>
+
+<hr>
+
+<h2>4. Variables del Modelo</h2>
+
+<ul>
+    <li><strong>Clima:</strong> Representa condiciones ambientales</li>
+    <li><strong>Hora:</strong> Influye en la demanda</li>
+    <li><strong>Zona:</strong> Representa ubicación</li>
+</ul>
+
+<hr>
+
+<h2>5. Formulario de Predicción</h2>
+
+<form method="POST">
+
+    <label>Clima:</label><br>
+    <input type="number" step="any" name="clima" required><br><br>
+
+    <label>Hora:</label><br>
+    <input type="number" step="any" name="hora" required><br><br>
+
+    <label>Zona:</label><br>
+    <input type="number" step="any" name="zona" required><br><br>
+
+    <button type="submit">Predecir Ocupación</button>
+
+</form>
+
+<hr>
+
+{% if resultado %}
+    <h2>Resultado de la Predicción:</h2>
+    <p>La ocupación estimada es: <strong>{{ resultado }}</strong></p>
+{% endif %}
+
+<hr>
+
+<h2>6. Evaluación del Modelo</h2>
+<p>
+El modelo puede evaluarse utilizando métricas como:
+</p>
+
+<ul>
+    <li>Error absoluto medio (MAE)</li>
+    <li>Raíz del error cuadrático medio (RMSE)</li>
+    <li>Coeficiente de determinación (R²)</li>
+</ul>
+
+<hr>
+
+<h2>7. Interpretación</h2>
+<p>
+El modelo permite identificar cómo cada variable afecta la ocupación, facilitando la toma de decisiones basada en datos.
+</p>
+
+<hr>
+
+<h2>8. Despliegue</h2>
+<p>
+Este sistema se implementa como una aplicación web utilizando Flask, permitiendo a los usuarios ingresar datos y obtener predicciones en tiempo real.
+</p>
+
+<hr>
+
+<a href="/">Volver a la Fase 1</a>
+
+</body>
+</html>
