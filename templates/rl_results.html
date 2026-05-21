@@ -1,20 +1,41 @@
-<h1>Q Table</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RL Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
 
-<table border="1">
-<tr>
-<th>State</th>
-<th>Action 0</th>
-<th>Action 1</th>
+<header>
+    <h1>Q-Table Results</h1>
+</header>
+
+<div class="container">
+
+<div class="card">
+
+<table style="width:100%; border-collapse: collapse;">
+<tr style="background: var(--surface3);">
+    <th>State</th>
+    <th>Action 0</th>
+    <th>Action 1</th>
 </tr>
 
 {% for i in range(q|length) %}
 <tr>
-<td>{{ i }}</td>
-<td>{{ q[i][0] }}</td>
-<td>{{ q[i][1] }}</td>
+    <td>{{ i }}</td>
+    <td>{{ q[i][0] }}</td>
+    <td>{{ q[i][1] }}</td>
 </tr>
 {% endfor %}
 
 </table>
 
-<a href="/rl">Back</a>
+</div>
+
+<a href="/rl" class="btn-link">← Back</a>
+
+</div>
+
+</body>
+</html>
