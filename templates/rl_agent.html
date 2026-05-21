@@ -1,12 +1,37 @@
-<h1>Intelligent Agent</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RL Agent</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
 
-<p>The agent moves between states 0 to 4.</p>
+<header>
+    <h1>Intelligent Agent</h1>
+</header>
 
+<div class="container">
+
+<div class="card">
+
+<h2>Problem Description</h2>
+<p>The agent must reach the final state (state 4) to receive a reward.</p>
+
+<h2>Environment</h2>
 <ul>
-<li>Action 0: left</li>
-<li>Action 1: right</li>
+<li>States: 0 - 4</li>
+<li>Actions: Move Left / Move Right</li>
+<li>Reward: 1 when reaching state 4</li>
 </ul>
 
-<p>Reward is given when reaching state 4.</p>
+<h2>Goal</h2>
+<p>Learn the optimal path to maximize rewards.</p>
 
-<a href="/rl">Back</a>
+</div>
+
+<a href="/rl" class="btn-link">← Back</a>
+
+</div>
+
+</body>
+</html>
