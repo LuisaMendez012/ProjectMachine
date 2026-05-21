@@ -1,65 +1,128 @@
+/* ===== GLOBAL STYLES ===== */
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
     margin: 0;
-    background: #f5f7fb;
-    color: #333;
+    background: #0f172a; /* dark background */
+    color: #e2e8f0;
 }
 
+/* ===== HEADER ===== */
 header {
-    background: #1e3a8a;
-    color: white;
+    background: #020617;
+    color: #38bdf8;
     padding: 20px;
     text-align: center;
+    border-bottom: 1px solid #1e293b;
 }
 
+/* ===== MAIN CONTAINER ===== */
 .container {
     width: 85%;
-    margin: 30px auto;
+    margin: 40px auto;
 }
 
+/* ===== CARDS ===== */
 .card {
-    background: white;
+    background: #020617;
     padding: 25px;
     margin-bottom: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    border-radius: 14px;
+    border: 1px solid #1e293b;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    transition: 0.3s;
 }
 
+/* Card hover effect */
+.card:hover {
+    transform: translateY(-4px);
+    border-color: #38bdf8;
+}
+
+/* ===== HEADINGS ===== */
 h1, h2 {
     margin-top: 0;
+    color: #38bdf8;
 }
 
+/* ===== BUTTONS ===== */
 button {
-    background: #2563eb;
-    color: white;
+    background: #38bdf8;
+    color: #020617;
     border: none;
     padding: 12px 20px;
     border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
+    transition: 0.3s;
 }
 
+/* Button hover */
 button:hover {
-    background: #1d4ed8;
+    background: #0ea5e9;
 }
 
+/* ===== INPUT FIELDS ===== */
 input {
     width: 100%;
     padding: 10px;
     border-radius: 6px;
-    border: 1px solid #ccc;
+    border: 1px solid #1e293b;
+    background: #020617;
+    color: #e2e8f0;
 }
 
+/* ===== LINKS ===== */
 a {
     text-decoration: none;
-    color: #2563eb;
+    color: #38bdf8;
     font-weight: bold;
+    transition: 0.3s;
 }
 
+/* Link hover */
+a:hover {
+    color: #0ea5e9;
+}
+
+/* ===== RESULT BOX ===== */
 .resultado {
-    background: #ecfdf5;
+    background: #022c22;
     padding: 15px;
-    border-left: 5px solid #10b981;
+    border-left: 5px solid #22c55e;
     border-radius: 8px;
     margin-top: 15px;
+}
+
+/* ===== TABLE STYLES ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th {
+    background: #020617;
+    color: #38bdf8;
+    border-bottom: 2px solid #38bdf8;
+    padding: 10px;
+}
+
+td {
+    padding: 10px;
+    border-bottom: 1px solid #1e293b;
+    text-align: center;
+}
+
+/* Table row hover */
+tr:hover {
+    background: #020617;
+}
+
+/* ===== LISTS ===== */
+ul {
+    padding-left: 20px;
+}
+
+li {
+    margin-bottom: 8px;
 }
