@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from model import predecir_ocupacion
+from model import predecir_ocupacion, crear_datos_evaluacion, calcular_validacion_cruzada
 from model_rl import train_q_learning, get_q_table
 import os
 import math
@@ -28,52 +28,6 @@ def calcular_metricas(dataset):
         'mape': round(mape, 2),
         'r2_pct': int(round(r2 * 100)),
     }
-
-
-# Build a small sample dataset for evaluation and example display
-def crear_datos_evaluacion():
-    return [
-        {'clima_val': 1.0, 'hora_val': 8.0, 'zona_val': 1.0, 'clima': 'Sunny', 'hora': '08:00', 'zona': 'A', 'real': 3.2},
-        {'clima_val': 0.7, 'hora_val': 12.0, 'zona_val': 2.0, 'clima': 'Cloudy', 'hora': '12:00', 'zona': 'B', 'real': 4.2},
-        {'clima_val': 0.3, 'hora_val': 17.0, 'zona_val': 3.0, 'clima': 'Rain', 'hora': '17:00', 'zona': 'C', 'real': 5.6},
-        {'clima_val': 0.7, 'hora_val': 20.0, 'zona_val': 1.0, 'clima': 'Cloudy', 'hora': '20:00', 'zona': 'A', 'real': 4.4},
-        {'clima_val': 1.0, 'hora_val': 22.0, 'zona_val': 2.0, 'clima': 'Sunny', 'hora': '22:00', 'zona': 'B', 'real': 5.1},
-    ]
-
-
-# Perform simple K-fold cross-validation using the sample dataset
-def calcular_validacion_cruzada(dataset, k=5):
-    fold_size = max(1, len(dataset) // k)
-    folds = []
-    for i in range(k):
-        start = i * fold_size
-        end = start + fold_size
-        test = dataset[start:end] if i < k - 1 else dataset[start:]
-        train = [x for j, x in enumerate(dataset) if j < start or j >= end]
-        if not test:
-            continue
-        fold_preds = []
-        for item in test:
-            pred = predecir_ocupacion(item['clima_val'], item['hora_val'], item['zona_val'])
-            fold_preds.append({'real': item['real'], 'pred': pred})
-        metrics = calcular_metricas(fold_preds)
-        folds.append({
-            'fold': i + 1,
-            'train_size': len(train),
-            'test_size': len(test),
-            'mae': metrics['mae'],
-            'rmse': metrics['rmse'],
-            'r2': metrics['r2'],
-        })
-    resumen = {
-        'mae_mean': round(statistics.mean([f['mae'] for f in folds]), 2),
-        'mae_std': round(statistics.pstdev([f['mae'] for f in folds]), 2),
-        'rmse_mean': round(statistics.mean([f['rmse'] for f in folds]), 2),
-        'r2_mean': round(statistics.mean([f['r2'] for f in folds]), 2),
-        'r2_std': round(statistics.pstdev([f['r2'] for f in folds]), 2),
-        'r2_pct': int(round(statistics.mean([f['r2'] for f in folds]) * 100)),
-    }
-    return {'folds': folds, 'resumen': resumen}
 
 
 # -------- PHASE 1: BUSINESS UNDERSTANDING --------
@@ -116,7 +70,7 @@ def fase3():
         for item in base_samples
     ]
 
-    cv = calcular_validacion_cruzada(base_samples, k=5)
+    cv = calcular_validacion_cruzada(k=5)
 
     riesgos = [
         {
