@@ -125,7 +125,23 @@ def fase3():
     baseline_metrics = calcular_metricas([
         {'real': real, 'pred': promedio_real} for real in reales
     ])
-    mb = {'r2': baseline_metrics['r2'], 'rmse': baseline_metrics['rmse'], 'mae': baseline_metrics['mae']}
+    mb = baseline_metrics
+
+    best_model = {
+        'name': 'Linear Regression',
+        'reason': 'Linear Regression is the reference model used for baseline comparison, and it has stable fold performance.'
+    }
+    if isinstance(rf_cv, dict) and 'error' not in rf_cv:
+        if rf_cv['resumen']['r2_mean'] >= cv['resumen']['r2_mean'] and rf_cv['resumen']['rmse_mean'] <= cv['resumen']['rmse_mean']:
+            best_model = {
+                'name': 'Random Forest',
+                'reason': 'Random Forest achieves equal or better cross-validated R² and lower RMSE than Linear Regression, making it the preferred regression model.'
+            }
+        else:
+            best_model = {
+                'name': 'Linear Regression',
+                'reason': 'Linear Regression retains a simpler structure and competitive cross-validation metrics in this dataset.'
+            }
 
     return render_template(
         'fase3.html',
@@ -139,6 +155,7 @@ def fase3():
         comparison_plot=comparison_plot,
         riesgos=riesgos,
         mb=mb,
+        best_model=best_model,
         active_page='evaluation'
     )
 

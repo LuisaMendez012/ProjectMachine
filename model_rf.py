@@ -60,8 +60,10 @@ def cross_validate_rf(k=5, n_estimators=100, random_state=42, max_depth=None):
     kf = KFold(n_splits=k, shuffle=True, random_state=42)
     folds = []
     maes = []
+    mses = []
     rmses = []
     r2s = []
+    mapes = []
 
     for i, (train_idx, test_idx) in enumerate(kf.split(X)):
         X_train, X_test = X[train_idx], X[test_idx]
@@ -71,17 +73,21 @@ def cross_validate_rf(k=5, n_estimators=100, random_state=42, max_depth=None):
         preds = model.predict(X_test)
         mae = mean_absolute_error(y_test, preds)
         rmse = np.sqrt(np.mean((y_test - preds) ** 2))
+        mape = np.mean(np.abs((y_test - preds) / np.where(y_test != 0, y_test, 1))) * 100
         r2 = r2_score(y_test, preds)
-        folds.append({'fold': i + 1, 'train_size': len(train_idx), 'test_size': len(test_idx), 'mae': round(float(mae), 2), 'rmse': round(float(rmse), 2), 'r2': round(float(r2), 2)})
+        folds.append({'fold': i + 1, 'train_size': len(train_idx), 'test_size': len(test_idx), 'mae': round(float(mae), 2), 'mse': round(float(np.mean((y_test - preds) ** 2)), 2), 'rmse': round(float(rmse), 2), 'r2': round(float(r2), 2), 'mape': round(float(mape), 2)})
         maes.append(mae)
+        mses.append(float(np.mean((y_test - preds) ** 2)) )
         rmses.append(rmse)
         r2s.append(r2)
+        mapes.append(mape)
 
     resumen = {
         'mae_mean': round(float(np.mean(maes)), 2),
-        'mae_std': round(float(np.std(maes, ddof=0)), 2),
+        'mse_mean': round(float(np.mean(mses)), 2),
         'rmse_mean': round(float(np.mean(rmses)), 2),
         'r2_mean': round(float(np.mean(r2s)), 2),
+        'mape_mean': round(float(np.mean(mapes)), 2),
         'r2_std': round(float(np.std(r2s, ddof=0)), 2),
         'r2_pct': int(round(float(np.mean(r2s)) * 100)),
     }

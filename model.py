@@ -143,6 +143,7 @@ def calcular_validacion_cruzada(k=5):
         preds = [item['pred'] for item in predictions]
         mae = float(np.mean(np.abs(np.array(reales) - np.array(preds))))
         rmse = float(np.sqrt(np.mean((np.array(reales) - np.array(preds)) ** 2)))
+        mape = float(np.mean(np.abs((np.array(reales) - np.array(preds)) / np.where(np.array(reales) != 0, np.array(reales), 1))) * 100)
         promedio = float(np.mean(reales))
         ss_res = float(np.sum((np.array(reales) - np.array(preds)) ** 2))
         ss_tot = float(np.sum((np.array(reales) - promedio) ** 2))
@@ -153,15 +154,18 @@ def calcular_validacion_cruzada(k=5):
             'train_size': len(train_rows),
             'test_size': len(test_rows),
             'mae': round(mae, 2),
+            'mse': round(float(np.mean((np.array(reales) - np.array(preds)) ** 2)), 2),
             'rmse': round(rmse, 2),
             'r2': round(r2, 2),
+            'mape': round(mape, 2),
         })
 
     resumen = {
         'mae_mean': round(float(np.mean([f['mae'] for f in folds])), 2),
-        'mae_std': round(float(np.std([f['mae'] for f in folds], ddof=0)), 2),
+        'mse_mean': round(float(np.mean([f['mse'] for f in folds])), 2),
         'rmse_mean': round(float(np.mean([f['rmse'] for f in folds])), 2),
         'r2_mean': round(float(np.mean([f['r2'] for f in folds])), 2),
+        'mape_mean': round(float(np.mean([f['mape'] for f in folds])), 2),
         'r2_std': round(float(np.std([f['r2'] for f in folds], ddof=0)), 2),
         'r2_pct': int(round(float(np.mean([f['r2'] for f in folds])) * 100)),
     }

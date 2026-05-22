@@ -100,22 +100,46 @@
                     <tr>
                         <th>Model</th>
                         <th>MAE mean</th>
+                        <th>MSE mean</th>
                         <th>RMSE mean</th>
                         <th>R² mean</th>
+                        <th>MAPE mean</th>
+                    </tr>
+                    <tr>
+                        <td>Baseline (mean prediction)</td>
+                        <td>{{ mb.mae }}</td>
+                        <td>{{ mb.mse }}</td>
+                        <td>{{ mb.rmse }}</td>
+                        <td>{{ mb.r2 }}</td>
+                        <td>{{ mb.mape }}%</td>
                     </tr>
                     <tr>
                         <td>Linear Regression</td>
                         <td>{{ cv.resumen.mae_mean }}</td>
+                        <td>{{ cv.resumen.mse_mean }}</td>
                         <td>{{ cv.resumen.rmse_mean }}</td>
                         <td>{{ cv.resumen.r2_mean }}</td>
+                        <td>{{ cv.resumen.mape_mean }}%</td>
                     </tr>
                     <tr>
                         <td>Random Forest</td>
                         <td>{{ rf_cv.resumen.mae_mean }}</td>
+                        <td>{{ rf_cv.resumen.mse_mean }}</td>
                         <td>{{ rf_cv.resumen.rmse_mean }}</td>
                         <td>{{ rf_cv.resumen.r2_mean }}</td>
+                        <td>{{ rf_cv.resumen.mape_mean }}%</td>
                     </tr>
                 </table>
+                <div class="result-card" style="margin-top:16px; padding: 16px; border-radius: 12px; background:#020617; border:1px solid #38bdf8;">
+                    <h3>Interpretation</h3>
+                    <p>The baseline model predicts the average occupancy and serves as a minimal benchmark. It is important because any regression model should improve on this naive forecast to justify its complexity.</p>
+                    <p>When the machine learning models show lower MAE/MSE/RMSE and higher R² than the baseline, they demonstrate meaningful predictive value beyond the dataset mean.</p>
+                    <p><strong>{{ best_model.name }}</strong> performs best overall. It provides the strongest combination of predictive accuracy and explained variance while remaining consistent with the cross-validation results.</p>
+                </div>
+                <div class="result-card" style="margin-top:16px; padding: 16px; border-radius: 12px; background:#020617; border:1px solid #38bdf8;">
+                    <h3>Best Model Recommendation</h3>
+                    <p><strong>{{ best_model.name }}</strong> — {{ best_model.reason }}</p>
+                </div>
                 {% endif %}
 
                 <div style="margin-top:12px;">
@@ -151,6 +175,12 @@
                     <img src="/{{ kmeans_plot }}" alt="KMeans cluster counts" style="max-width:100%;height:auto;" />
                 </div>
                 {% endif %}
+                <div style="margin-top:16px; padding:16px; background:#020617; border:1px solid #38bdf8; border-radius:12px; color:#cbd5e1;">
+                    <h3>K-Means evaluation</h3>
+                    <p>Inertia: {{ kmeans.inertia }}</p>
+                    <p>Silhouette score: {{ kmeans.silhouette }}</p>
+                    <p>Higher silhouette scores indicate more coherent clusters; values closer to 1.0 are better.</p>
+                </div>
                 <h3>Cluster counts</h3>
                 <ul>
                     {% for cid, cnt in kmeans.counts.items() %}
