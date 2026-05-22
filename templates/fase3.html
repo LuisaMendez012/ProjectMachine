@@ -111,6 +111,11 @@
                     </tr>
                 </table>
                 {% endif %}
+
+                <div style="margin-top:12px;">
+                    <h3>Random Forest — Feature Importances</h3>
+                    <img src="/static/images/rf_importances.png" alt="RF importances" style="max-width:100%;height:auto;" />
+                </div>
             </div>
         </div>
 
@@ -121,6 +126,11 @@
                 {% if kmeans.error is defined %}
                 <p>Error running K-Means: {{ kmeans.error }}</p>
                 {% else %}
+                <form action="/kmeans/run" method="get" style="margin-bottom:12px;">
+                    <label for="k">Clusters (k):</label>
+                    <input type="number" name="k" id="k" min="2" max="10" value="4" />
+                    <button type="submit" class="btn btn-outline">Run K-Means</button>
+                </form>
                 <div>
                     <img src="/{{ kmeans.image_path }}" alt="KMeans clusters" style="max-width:100%;height:auto;" />
                 </div>
