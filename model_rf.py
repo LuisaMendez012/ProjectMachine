@@ -70,7 +70,7 @@ def cross_validate_rf(k=5, n_estimators=100, random_state=42, max_depth=None):
         model.fit(X_train, y_train)
         preds = model.predict(X_test)
         mae = mean_absolute_error(y_test, preds)
-        rmse = mean_squared_error(y_test, preds, squared=False)
+        rmse = np.sqrt(np.mean((y_test - preds) ** 2))
         r2 = r2_score(y_test, preds)
         folds.append({'fold': i + 1, 'train_size': len(train_idx), 'test_size': len(test_idx), 'mae': round(float(mae), 2), 'rmse': round(float(rmse), 2), 'r2': round(float(r2), 2)})
         maes.append(mae)
@@ -108,3 +108,66 @@ def plot_feature_importances(model=None, save_path=None):
     plt.close()
 
     return os.path.join('static', 'images', 'rf_importances.png')
+
+
+def plot_prediction_vs_actual(actuals, preds, save_path=None):
+    if save_path is None:
+        save_path = os.path.join(os.path.dirname(__file__), 'static', 'images', 'prediction_vs_actual.png')
+    os.makedirs(os.path.dirname(save_path), exist_ok=True)
+
+    plt.figure(figsize=(10, 4))
+    indices = np.arange(len(actuals)) + 1
+    plt.plot(indices, actuals, label='Actual', marker='o')
+    plt.plot(indices, preds, label='Predicted', marker='o')
+    plt.title('Prediction vs Actual Occupancy')
+    plt.xlabel('Sample index')
+    plt.ylabel('Occupancy count')
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(save_path, dpi=150)
+    plt.close()
+    return os.path.join('static', 'images', 'prediction_vs_actual.png')
+
+
+def plot_model_comparison(cv_linear, cv_rf, save_path=None):
+    if save_path is None:
+        save_path = os.path.join(os.path.dirname(__file__), 'static', 'images', 'model_comparison.png')
+    os.makedirs(os.path.dirname(save_path), exist_ok=True)
+
+    labels = ['MAE', 'RMSE', 'R²']
+    linear_values = [cv_linear['resumen']['mae_mean'], cv_linear['resumen']['rmse_mean'], cv_linear['resumen']['r2_mean']]
+    rf_values = [cv_rf['resumen']['mae_mean'], cv_rf['resumen']['rmse_mean'], cv_rf['resumen']['r2_mean']]
+
+    x = np.arange(len(labels))
+    width = 0.35
+
+    plt.figure(figsize=(8, 4))
+    plt.bar(x - width/2, linear_values, width, label='Linear')
+    plt.bar(x + width/2, rf_values, width, label='Random Forest')
+    plt.xticks(x, labels)
+    plt.title('Model Comparison: Cross-validated Metrics')
+    plt.ylabel('Metric value')
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(save_path, dpi=150)
+    plt.close()
+    return os.path.join('static', 'images', 'model_comparison.png')
+
+
+def plot_metrics_summary(m, save_path=None):
+    if save_path is None:
+        save_path = os.path.join(os.path.dirname(__file__), 'static', 'images', 'metrics_summary.png')
+    os.makedirs(os.path.dirname(save_path), exist_ok=True)
+
+    labels = ['MAE', 'MSE', 'RMSE', 'R²']
+    values = [m['mae'], m['mse'], m['rmse'], m['r2']]
+    plt.figure(figsize=(8, 4))
+    bars = plt.bar(labels, values, color=['#38bdf8', '#0ea5e9', '#22c55e', '#f59e0b'])
+    plt.title('Evaluation Metrics Summary')
+    plt.ylabel('Value')
+    for bar, value in zip(bars, values):
+        plt.text(bar.get_x() + bar.get_width()/2, bar.get_height(), str(value), ha='center', va='bottom')
+    plt.tight_layout()
+    plt.savefig(save_path, dpi=150)
+    plt.close()
+    return os.path.join('static', 'images', 'metrics_summary.png')

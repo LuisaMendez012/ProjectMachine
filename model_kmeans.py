@@ -76,3 +76,21 @@ def run_kmeans(n_clusters=4, random_state=42, save_path=None):
         'counts': counts_map,
         'image_path': rel_path,
     }
+
+
+def plot_cluster_counts(counts, save_path=None):
+    if save_path is None:
+        save_path = os.path.join(os.path.dirname(__file__), 'static', 'images', 'kmeans_counts.png')
+    os.makedirs(os.path.dirname(save_path), exist_ok=True)
+
+    labels = [f'Cluster {int(k)}' for k in sorted(counts.keys())]
+    values = [counts[k] for k in sorted(counts.keys())]
+
+    plt.figure(figsize=(6, 4))
+    bars = plt.bar(labels, values, color='skyblue')
+    plt.title('K-Means Cluster Sample Counts')
+    plt.ylabel('Number of samples')
+    plt.tight_layout()
+    plt.savefig(save_path, dpi=150)
+    plt.close()
+    return os.path.join('static', 'images', 'kmeans_counts.png')

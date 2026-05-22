@@ -177,9 +177,15 @@
         <hr>
         <h3>Random Forest (alternative model)</h3>
         <p>Train a Random Forest baseline or use it to predict occupancy.</p>
-        <div style="margin-bottom:12px;">
-            <a href="/rf/train" class="btn btn-outline">Train Random Forest</a>
-        </div>
+        <form method="GET" action="/rf/train" class="input-group" style="margin-bottom:12px;">
+            <label for="n_estimators">Random Forest n_estimators</label>
+            <input type="number" name="n_estimators" id="n_estimators" min="10" step="10" value="100" required>
+
+            <label for="max_depth">Max depth (optional)</label>
+            <input type="number" name="max_depth" id="max_depth" min="1" step="1" placeholder="Any">
+
+            <button type="submit" class="btn btn-outline">Train Random Forest</button>
+        </form>
         <form method="POST" action="/modelo/rf" class="input-group">
             <label for="clima_rf">Weather situation (1-4)</label>
             <input type="number" name="clima" id="clima_rf" min="1" max="4" step="1" required>
@@ -189,6 +195,12 @@
 
             <label for="zona_rf">Season (1 = Winter, 2 = Spring, 3 = Summer, 4 = Fall)</label>
             <input type="number" name="zona" id="zona_rf" min="1" max="4" step="1" required>
+
+            <label for="n_estimators_rf">n_estimators</label>
+            <input type="number" name="n_estimators" id="n_estimators_rf" min="10" step="10" value="100">
+
+            <label for="max_depth_rf">Max depth</label>
+            <input type="number" name="max_depth" id="max_depth_rf" min="1" step="1" placeholder="Any">
 
             <button type="submit" class="btn btn-primary">Predict with Random Forest</button>
         </form>

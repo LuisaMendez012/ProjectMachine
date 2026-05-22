@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, redirect
 from model import predecir_ocupacion, crear_datos_evaluacion, calcular_validacion_cruzada
 from model_rl import train_q_learning, get_q_table
-from model_rf import train_random_forest, predict_rf, cross_validate_rf, plot_feature_importances
-from model_kmeans import run_kmeans
+from model_rf import train_random_forest, predict_rf, cross_validate_rf, plot_feature_importances, plot_prediction_vs_actual, plot_model_comparison, plot_metrics_summary
+from model_kmeans import run_kmeans, plot_cluster_counts
 import os
 import math
 import statistics
@@ -83,8 +83,18 @@ def fase3():
     # K-Means clustering analysis and visualization
     try:
         kmeans_data = run_kmeans(n_clusters=4)
+        kmeans_plot = plot_cluster_counts(kmeans_data['counts'])
     except Exception as e:
         kmeans_data = {'error': str(e)}
+        kmeans_plot = None
+
+    prediction_plot = plot_prediction_vs_actual([item['real'] for item in base_samples], [item['pred'] for item in base_samples])
+    metrics_plot = plot_metrics_summary(m)
+
+    try:
+        comparison_plot = plot_model_comparison(cv, rf_cv)
+    except Exception:
+        comparison_plot = None
 
     riesgos = [
         {
@@ -117,7 +127,20 @@ def fase3():
     ])
     mb = {'r2': baseline_metrics['r2'], 'rmse': baseline_metrics['rmse'], 'mae': baseline_metrics['mae']}
 
-    return render_template('fase3.html', m=m, cv=cv, rf_cv=rf_cv, kmeans=kmeans_data, riesgos=riesgos, mb=mb, active_page='evaluation')
+    return render_template(
+        'fase3.html',
+        m=m,
+        cv=cv,
+        rf_cv=rf_cv,
+        kmeans=kmeans_data,
+        kmeans_plot=kmeans_plot,
+        prediction_plot=prediction_plot,
+        metrics_plot=metrics_plot,
+        comparison_plot=comparison_plot,
+        riesgos=riesgos,
+        mb=mb,
+        active_page='evaluation'
+    )
 
 
 @app.route('/rf/train')

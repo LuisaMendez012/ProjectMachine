@@ -54,10 +54,16 @@
                     <div class="bar-fill" style="width: {{ m.r2_pct }}%;"></div>
                 </div>
                 <p>{{ m.r2_pct }}% explained variance.</p>
+                <div style="margin-top:16px;">
+                    <img src="/{{ metrics_plot }}" alt="Metrics summary" style="max-width:100%;height:auto;" />
+                </div>
             </div>
 
             <div class="card">
                 <h2>Prediction vs Actual</h2>
+                {% if prediction_plot %}
+                <img src="/{{ prediction_plot }}" alt="Prediction vs Actual" style="max-width:100%;height:auto;" />
+                {% endif %}
                 <table>
                     <tr>
                         <th>#</th>
@@ -116,6 +122,12 @@
                     <h3>Random Forest — Feature Importances</h3>
                     <img src="/static/images/rf_importances.png" alt="RF importances" style="max-width:100%;height:auto;" />
                 </div>
+                {% if comparison_plot %}
+                <div style="margin-top:16px;">
+                    <h3>Cross-validated Model Comparison</h3>
+                    <img src="/{{ comparison_plot }}" alt="Model comparison" style="max-width:100%;height:auto;" />
+                </div>
+                {% endif %}
             </div>
         </div>
 
@@ -134,6 +146,11 @@
                 <div>
                     <img src="/{{ kmeans.image_path }}" alt="KMeans clusters" style="max-width:100%;height:auto;" />
                 </div>
+                {% if kmeans_plot %}
+                <div style="margin-top:16px;">
+                    <img src="/{{ kmeans_plot }}" alt="KMeans cluster counts" style="max-width:100%;height:auto;" />
+                </div>
+                {% endif %}
                 <h3>Cluster counts</h3>
                 <ul>
                     {% for cid, cnt in kmeans.counts.items() %}
