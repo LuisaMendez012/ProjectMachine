@@ -5,6 +5,10 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split, KFold
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from model import load_dataset, _build_feature_vector
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+from model import FEATURE_NAMES
 
 
 def _build_matrix(rows):
@@ -82,3 +86,25 @@ def cross_validate_rf(k=5, n_estimators=100, random_state=42, max_depth=None):
         'r2_pct': int(round(float(np.mean(r2s)) * 100)),
     }
     return {'folds': folds, 'resumen': resumen}
+
+
+def plot_feature_importances(model=None, save_path=None):
+    if model is None:
+        model = train_random_forest()
+    importances = model.feature_importances_
+    names = FEATURE_NAMES
+    indices = np.argsort(importances)[::-1]
+
+    if save_path is None:
+        save_path = os.path.join(os.path.dirname(__file__), 'static', 'images', 'rf_importances.png')
+    os.makedirs(os.path.dirname(save_path), exist_ok=True)
+
+    plt.figure(figsize=(8, 4))
+    plt.title('Random Forest feature importances')
+    plt.bar([names[i] for i in indices], importances[indices])
+    plt.xticks(rotation=45, ha='right')
+    plt.tight_layout()
+    plt.savefig(save_path, dpi=150)
+    plt.close()
+
+    return os.path.join('static', 'images', 'rf_importances.png')
