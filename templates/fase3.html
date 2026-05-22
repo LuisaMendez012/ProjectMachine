@@ -16,6 +16,8 @@
         <div class="tabs">
             <button class="tab-btn active" onclick="showTab('metrics', this)">Performance Metrics</button>
             <button class="tab-btn" onclick="showTab('cv', this)">Cross Validation</button>
+            <button class="tab-btn" onclick="showTab('comparison', this)">Model Comparison</button>
+            <button class="tab-btn" onclick="showTab('clustering', this)">Clustering</button>
             <button class="tab-btn" onclick="showTab('risks', this)">Risk Analysis</button>
         </div>
 
@@ -78,6 +80,63 @@
                     </tr>
                     {% endfor %}
                 </table>
+            </div>
+        </div>
+
+        <div id="tab-comparison" class="tab-content">
+            <div class="card">
+                <h2>Model Comparison</h2>
+                <p>Compare Linear Regression and Random Forest performance (cross-validated).</p>
+                {% if rf_cv.error is defined %}
+                <p>Error computing RF CV: {{ rf_cv.error }}</p>
+                {% else %}
+                <table>
+                    <tr>
+                        <th>Model</th>
+                        <th>MAE mean</th>
+                        <th>RMSE mean</th>
+                        <th>R² mean</th>
+                    </tr>
+                    <tr>
+                        <td>Linear Regression</td>
+                        <td>{{ cv.resumen.mae_mean }}</td>
+                        <td>{{ cv.resumen.rmse_mean }}</td>
+                        <td>{{ cv.resumen.r2_mean }}</td>
+                    </tr>
+                    <tr>
+                        <td>Random Forest</td>
+                        <td>{{ rf_cv.resumen.mae_mean }}</td>
+                        <td>{{ rf_cv.resumen.rmse_mean }}</td>
+                        <td>{{ rf_cv.resumen.r2_mean }}</td>
+                    </tr>
+                </table>
+                {% endif %}
+            </div>
+        </div>
+
+        <div id="tab-clustering" class="tab-content">
+            <div class="card">
+                <h2>K-Means Clustering</h2>
+                <p>Exploratory segmentation of occupancy behavior by temporal and weather conditions.</p>
+                {% if kmeans.error is defined %}
+                <p>Error running K-Means: {{ kmeans.error }}</p>
+                {% else %}
+                <div>
+                    <img src="/{{ kmeans.image_path }}" alt="KMeans clusters" style="max-width:100%;height:auto;" />
+                </div>
+                <h3>Cluster counts</h3>
+                <ul>
+                    {% for cid, cnt in kmeans.counts.items() %}
+                    <li>Cluster {{ cid }}: {{ cnt }} samples</li>
+                    {% endfor %}
+                </ul>
+                <h3>Cluster centroids (approx)</h3>
+                <ul>
+                    {% for e in kmeans.explanations %}
+                    <li>Cluster {{ e.cluster }}: {{ e.centroid }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
             </div>
         </div>
 
