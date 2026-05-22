@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from model import predecir_ocupacion, crear_datos_evaluacion, calcular_validacion_cruzada
 from model_rl import train_q_learning, get_q_table
-from model_rf import train_random_forest, predict_rf, cross_validate_rf
+from model_rf import train_random_forest, predict_rf, cross_validate_rf, plot_feature_importances
 from model_kmeans import run_kmeans
 import os
 import math
@@ -123,7 +123,15 @@ def fase3():
 @app.route('/rf/train')
 def rf_train():
     # Trigger training (cached by lru_cache in model_rf)
-    train_random_forest()
+    n_estimators = int(request.args.get('n_estimators', 100))
+    max_depth = request.args.get('max_depth')
+    max_depth = int(max_depth) if max_depth is not None and max_depth != '' else None
+    train_random_forest(n_estimators=n_estimators, max_depth=max_depth)
+    # create feature importance plot
+    try:
+        plot_feature_importances()
+    except Exception:
+        pass
     return "Random Forest training completed. <a href='/evaluacion'>Back to evaluation</a>"
 
 
@@ -134,8 +142,24 @@ def modelo_rf():
         clima = float(request.form['clima'])
         hora = float(request.form['hora'])
         zona = float(request.form['zona'])
-        resultado = predict_rf(clima, hora, zona)
+        # allow optional hyperparams for a quick train+predict
+        n_estimators = int(request.form.get('n_estimators', 100))
+        max_depth = request.form.get('max_depth')
+        max_depth = int(max_depth) if max_depth not in (None, '') else None
+        # force a model with provided params
+        model = train_random_forest(n_estimators=n_estimators, max_depth=max_depth)
+        resultado = predict_rf(clima, hora, zona, model=model)
     return render_template('fase2.html', resultado_rf=resultado, active_page='model')
+
+
+@app.route('/kmeans/run')
+def kmeans_run():
+    k = int(request.args.get('k', 4))
+    try:
+        run_kmeans(n_clusters=k)
+    except Exception:
+        pass
+    return redirect('/evaluacion')
 
 @app.route('/entendimiento')
 @app.route('/home')
