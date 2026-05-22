@@ -151,6 +151,7 @@ def fase3():
     return render_template('fase3.html', m=m, cv=cv, riesgos=riesgos, mb=mb, active_page='evaluation')
 
 @app.route('/entendimiento')
+@app.route('/home')
 def fase1_alias():
     return render_template('fase1.html', active_page='home')
  
