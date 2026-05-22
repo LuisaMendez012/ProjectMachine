@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Bike Parking Occupancy{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <div class="page-shell">
+        <header class="site-header">
+            <div class="brand">Bike Parking Occupancy</div>
+            <nav class="main-nav">
+                <a href="/" class="{{ 'active' if active_page == 'home' else '' }}">Home</a>
+                <a href="/modelo" class="{{ 'active' if active_page == 'model' else '' }}">Model</a>
+                <a href="/evaluacion" class="{{ 'active' if active_page == 'evaluation' else '' }}">Evaluation</a>
+                <a href="/rl" class="{{ 'active' if active_page == 'rl' else '' }}">Reinforcement Learning</a>
+            </nav>
+        </header>
+
+        <main class="wrapper">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

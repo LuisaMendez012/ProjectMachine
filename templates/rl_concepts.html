@@ -1,41 +1,37 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>RL Concepts</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
+{% extends 'base.html' %}
 
-<header>
-    <h1>Reinforcement Learning Concepts</h1>
-</header>
+{% block title %}Reinforcement Learning Concepts{% endblock %}
 
-<div class="container">
+{% block content %}
+<section class="section">
+    <div class="section-inner">
+        <div class="section-header">
+            <div class="section-number">RL</div>
+            <div>
+                <h2>Reinforcement Learning Concepts</h2>
+                <p>Learn the fundamental concepts behind an agent that improves through trial and reward.</p>
+            </div>
+        </div>
 
-<div class="card">
+        <div class="card">
+            <h2>What is Reinforcement Learning?</h2>
+            <p>Reinforcement learning is a machine learning approach where an agent learns by interacting with an environment and receiving feedback through rewards.</p>
 
-<h2>What is Reinforcement Learning?</h2>
-<p>Reinforcement Learning is a machine learning technique where an agent learns by interacting with an environment and receiving rewards.</p>
+            <h2>Core Concepts</h2>
+            <ul>
+                <li><strong>Agent:</strong> The decision maker.</li>
+                <li><strong>Environment:</strong> The system the agent interacts with.</li>
+                <li><strong>States:</strong> The possible situations the agent can be in.</li>
+                <li><strong>Actions:</strong> Choices available to the agent.</li>
+                <li><strong>Rewards:</strong> Feedback signals that guide learning.</li>
+                <li><strong>Policy:</strong> The agent's strategy to choose actions.</li>
+            </ul>
 
-<h2>Core Concepts</h2>
+            <h2>Exploration vs Exploitation</h2>
+            <p>The agent must balance trying new actions (exploration) with using known good actions (exploitation) to maximize reward over time.</p>
+        </div>
 
-<ul>
-<li><b>Agent:</b> Decision maker</li>
-<li><b>Environment:</b> Where the agent operates</li>
-<li><b>States:</b> Possible situations</li>
-<li><b>Actions:</b> Possible decisions</li>
-<li><b>Rewards:</b> Feedback signals</li>
-<li><b>Policy:</b> Strategy of the agent</li>
-</ul>
-
-<h2>Exploration vs Exploitation</h2>
-<p>The agent must balance trying new actions (exploration) and using known best actions (exploitation).</p>
-
-</div>
-
-<a href="/rl" class="btn-link">← Back</a>
-
-</div>
-
-</body>
-</html>
+        <a href="/rl" class="btn btn-link">Back</a>
+    </div>
+</section>
+{% endblock %}

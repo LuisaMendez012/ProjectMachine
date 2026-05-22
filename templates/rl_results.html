@@ -1,41 +1,36 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>RL Results</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
+{% extends 'base.html' %}
 
-<header>
-    <h1>Q-Table Results</h1>
-</header>
+{% block title %}Q-Table Results{% endblock %}
 
-<div class="container">
+{% block content %}
+<section class="section">
+    <div class="section-inner">
+        <div class="section-header">
+            <div class="section-number">RL</div>
+            <div>
+                <h2>Q-Table Results</h2>
+                <p>Review the final Q-values learned by the reinforcement learning agent.</p>
+            </div>
+        </div>
 
-<div class="card">
+        <div class="card">
+            <table>
+                <tr>
+                    <th>State</th>
+                    <th>Action 0</th>
+                    <th>Action 1</th>
+                </tr>
+                {% for i in range(q|length) %}
+                <tr>
+                    <td>{{ i }}</td>
+                    <td>{{ q[i][0] }}</td>
+                    <td>{{ q[i][1] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
 
-<table style="width:100%; border-collapse: collapse;">
-<tr style="background: var(--surface3);">
-    <th>State</th>
-    <th>Action 0</th>
-    <th>Action 1</th>
-</tr>
-
-{% for i in range(q|length) %}
-<tr>
-    <td>{{ i }}</td>
-    <td>{{ q[i][0] }}</td>
-    <td>{{ q[i][1] }}</td>
-</tr>
-{% endfor %}
-
-</table>
-
-</div>
-
-<a href="/rl" class="btn-link">← Back</a>
-
-</div>
-
-</body>
-</html>
+        <a href="/rl" class="btn btn-link">Back</a>
+    </div>
+</section>
+{% endblock %}

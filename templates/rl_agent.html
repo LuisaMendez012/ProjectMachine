@@ -1,37 +1,34 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>RL Agent</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
+{% extends 'base.html' %}
 
-<header>
-    <h1>Intelligent Agent</h1>
-</header>
+{% block title %}RL Agent{% endblock %}
 
-<div class="container">
+{% block content %}
+<section class="section">
+    <div class="section-inner">
+        <div class="section-header">
+            <div class="section-number">RL</div>
+            <div>
+                <h2>Intelligent Agent</h2>
+                <p>This section describes the reinforcement learning agent and its environment.</p>
+            </div>
+        </div>
 
-<div class="card">
+        <div class="card">
+            <h2>Problem Description</h2>
+            <p>The agent must reach the final state to receive a reward.</p>
 
-<h2>Problem Description</h2>
-<p>The agent must reach the final state (state 4) to receive a reward.</p>
+            <h2>Environment</h2>
+            <ul>
+                <li><strong>States:</strong> 0 through 4</li>
+                <li><strong>Actions:</strong> Move left or move right</li>
+                <li><strong>Reward:</strong> 1 when reaching state 4</li>
+            </ul>
 
-<h2>Environment</h2>
-<ul>
-<li>States: 0 - 4</li>
-<li>Actions: Move Left / Move Right</li>
-<li>Reward: 1 when reaching state 4</li>
-</ul>
+            <h2>Goal</h2>
+            <p>Learn the optimal path that maximizes long-term reward.</p>
+        </div>
 
-<h2>Goal</h2>
-<p>Learn the optimal path to maximize rewards.</p>
-
-</div>
-
-<a href="/rl" class="btn-link">← Back</a>
-
-</div>
-
-</body>
-</html>
+        <a href="/rl" class="btn btn-link">Back</a>
+    </div>
+</section>
+{% endblock %}

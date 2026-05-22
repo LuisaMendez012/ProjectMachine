@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+
+{% block title %}Phase 3 — Evaluation{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="section-inner">
+        <div class="section-header">
+            <div class="section-number">03</div>
+            <div>
+                <h2>Model Evaluation</h2>
+                <p>Review the performance metrics, cross-validation results, and risk assessment for the current occupancy model.</p>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('metrics', this)">Performance Metrics</button>
+            <button class="tab-btn" onclick="showTab('cv', this)">Cross Validation</button>
+            <button class="tab-btn" onclick="showTab('risks', this)">Risk Analysis</button>
+        </div>
+
+        <div id="tab-metrics" class="tab-content active">
+            <div class="card">
+                <h2>Performance Metrics</h2>
+                <p>These indicators measure how close predicted occupancy values are to actual observations.</p>
+
+                <div class="metrics-grid">
+                    <div class="metric-box">
+                        <div class="value">{{ m.mae }}</div>
+                        <div class="label">MAE</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="value">{{ m.mse }}</div>
+                        <div class="label">MSE</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="value">{{ m.rmse }}</div>
+                        <div class="label">RMSE</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="value">{{ m.r2 }}</div>
+                        <div class="label">R²</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="value">{{ m.mape }}%</div>
+                        <div class="label">MAPE</div>
+                    </div>
+                </div>
+
+                <p>R² closer to 1.0 indicates a better fit.</p>
+                <div class="bar-wrap">
+                    <div class="bar-fill" style="width: {{ m.r2_pct }}%;"></div>
+                </div>
+                <p>{{ m.r2_pct }}% explained variance.</p>
+            </div>
+
+            <div class="card">
+                <h2>Prediction vs Actual</h2>
+                <table>
+                    <tr>
+                        <th>#</th>
+                        <th>Climate</th>
+                        <th>Time</th>
+                        <th>Zone</th>
+                        <th>Actual</th>
+                        <th>Predicted</th>
+                        <th>Error</th>
+                    </tr>
+                    {% for s in m.samples %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ s.clima }}</td>
+                        <td>{{ s.hora }}</td>
+                        <td>{{ s.zona }}</td>
+                        <td>{{ s.real }}</td>
+                        <td>{{ s.pred }}</td>
+                        <td>{{ s.error }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        <div id="tab-cv" class="tab-content">
+            <div class="card">
+                <h2>K-Fold Cross Validation</h2>
+                <p>The dataset is split into folds to estimate model generalization.</p>
+                <table>
+                    <tr>
+                        <th>Fold</th>
+                        <th>Train Samples</th>
+                        <th>Test Samples</th>
+                        <th>MAE</th>
+                        <th>RMSE</th>
+                        <th>R²</th>
+                    </tr>
+                    {% for f in cv.folds %}
+                    <tr>
+                        <td>{{ f.fold }}</td>
+                        <td>{{ f.train_size }}</td>
+                        <td>{{ f.test_size }}</td>
+                        <td>{{ f.mae }}</td>
+                        <td>{{ f.rmse }}</td>
+                        <td>{{ f.r2 }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+            <div class="card">
+                <h2>Fold Summary</h2>
+                <div class="metrics-grid">
+                    <div class="metric-box">
+                        <div class="value">{{ cv.resumen.mae_mean }}</div>
+                        <div class="label">MAE mean</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="value">{{ cv.resumen.mae_std }}</div>
+                        <div class="label">MAE std</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="value">{{ cv.resumen.rmse_mean }}</div>
+                        <div class="label">RMSE mean</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="value">{{ cv.resumen.r2_mean }}</div>
+                        <div class="label">R² mean</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="value">{{ cv.resumen.r2_std }}</div>
+                        <div class="label">R² std</div>
+                    </div>
+                </div>
+                <div class="bar-wrap">
+                    <div class="bar-fill" style="width: {{ cv.resumen.r2_pct }}%;"></div>
+                </div>
+                <p>Stable performance is indicated by low R² variance.</p>
+            </div>
+        </div>
+
+        <div id="tab-risks" class="tab-content">
+            <div class="card">
+                <h2>Risk Analysis</h2>
+                <p>Potential issues that may affect the model's predictive performance.</p>
+                {% for r in riesgos %}
+                <div class="risk-card {{ r.nivel }}">
+                    <h3>{{ r.nombre }} <span class="badge badge-{{ r.nivel }}">{{ r.nivel }}</span></h3>
+                    <p>{{ r.descripcion }}</p>
+                    <p><strong>Indicator:</strong> {{ r.indicador }}</p>
+                    <div class="rec">Recommendation: {{ r.recomendacion }}</div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="card">
+                <h2>Baseline Metrics</h2>
+                <div class="metrics-grid">
+                    <div class="metric-box">
+                        <div class="value">{{ mb.r2 }}</div>
+                        <div class="label">R²</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="value">{{ mb.rmse }}</div>
+                        <div class="label">RMSE</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="value">{{ mb.mae }}</div>
+                        <div class="label">MAE</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+function showTab(name, btn) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    btn.classList.add('active');
+}
+</script>
+{% endblock %}
