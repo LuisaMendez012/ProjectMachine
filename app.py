@@ -113,8 +113,8 @@ def fase3():
         },
         {
             'nivel': 'Bajo',
-            'nombre': 'Seasonal variation',
-            'descripcion': 'Occupancy behavior may change across different seasons.',
+            'nombre': 'Climatic period variation',
+            'descripcion': 'Occupancy behavior may change across different climatic periods (e.g., dry vs. rainy).',
             'indicador': 'Future shifts in usage patterns',
             'recomendacion': 'Retrain the model with recent data periodically.',
         },
