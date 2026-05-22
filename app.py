@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request
 from model import predecir_ocupacion, crear_datos_evaluacion, calcular_validacion_cruzada
 from model_rl import train_q_learning, get_q_table
+from model_rf import train_random_forest, predict_rf, cross_validate_rf
+from model_kmeans import run_kmeans
 import os
 import math
 import statistics
@@ -72,6 +74,18 @@ def fase3():
 
     cv = calcular_validacion_cruzada(k=5)
 
+    # Random Forest cross-validation (kept separate from linear CV)
+    try:
+        rf_cv = cross_validate_rf(k=5)
+    except Exception as e:
+        rf_cv = {'error': str(e)}
+
+    # K-Means clustering analysis and visualization
+    try:
+        kmeans_data = run_kmeans(n_clusters=4)
+    except Exception as e:
+        kmeans_data = {'error': str(e)}
+
     riesgos = [
         {
             'nivel': 'Alto',
@@ -103,7 +117,25 @@ def fase3():
     ])
     mb = {'r2': baseline_metrics['r2'], 'rmse': baseline_metrics['rmse'], 'mae': baseline_metrics['mae']}
 
-    return render_template('fase3.html', m=m, cv=cv, riesgos=riesgos, mb=mb, active_page='evaluation')
+    return render_template('fase3.html', m=m, cv=cv, rf_cv=rf_cv, kmeans=kmeans_data, riesgos=riesgos, mb=mb, active_page='evaluation')
+
+
+@app.route('/rf/train')
+def rf_train():
+    # Trigger training (cached by lru_cache in model_rf)
+    train_random_forest()
+    return "Random Forest training completed. <a href='/evaluacion'>Back to evaluation</a>"
+
+
+@app.route('/modelo/rf', methods=['GET', 'POST'])
+def modelo_rf():
+    resultado = None
+    if request.method == 'POST':
+        clima = float(request.form['clima'])
+        hora = float(request.form['hora'])
+        zona = float(request.form['zona'])
+        resultado = predict_rf(clima, hora, zona)
+    return render_template('fase2.html', resultado_rf=resultado, active_page='model')
 
 @app.route('/entendimiento')
 @app.route('/home')
