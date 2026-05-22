@@ -13,10 +13,10 @@ WEATHER_LABELS = {
     '4': 'Heavy rain/snow',
 }
 SEASON_LABELS = {
-    '1': 'Winter',
-    '2': 'Spring',
-    '3': 'Summer',
-    '4': 'Fall',
+    '1': 'Dry period',
+    '2': 'Moderate rainfall period',
+    '3': 'High rainfall period',
+    '4': 'Variable weather period',
 }
 
 

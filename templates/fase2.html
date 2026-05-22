@@ -168,8 +168,9 @@
             <label for="hora">Hour of day (0-23)</label>
             <input type="number" name="hora" id="hora" min="0" max="23" step="1" required>
 
-            <label for="zona">Season (1 = Winter, 2 = Spring, 3 = Summer, 4 = Fall)</label>
+            <label for="zona">Climate period (1 = Dry, 2 = Moderate rainfall, 3 = High rainfall, 4 = Variable)</label>
             <input type="number" name="zona" id="zona" min="1" max="4" step="1" required>
+            <small class="help-text">Note: values correspond to Bogotá climate periods (presentation only). Do not change dataset values (1–4).</small>
 
             <button type="submit" class="btn btn-primary">Predict occupancy</button>
         </form>
@@ -193,8 +194,9 @@
             <label for="hora_rf">Hour of day (0-23)</label>
             <input type="number" name="hora" id="hora_rf" min="0" max="23" step="1" required>
 
-            <label for="zona_rf">Season (1 = Winter, 2 = Spring, 3 = Summer, 4 = Fall)</label>
+            <label for="zona_rf">Climate period (1 = Dry, 2 = Moderate rainfall, 3 = High rainfall, 4 = Variable)</label>
             <input type="number" name="zona" id="zona_rf" min="1" max="4" step="1" required>
+            <small class="help-text">Note: the numeric values remain unchanged; they are reinterpreted here for Bogotá.</small>
 
             <label for="n_estimators_rf">n_estimators</label>
             <input type="number" name="n_estimators" id="n_estimators_rf" min="10" step="10" value="100">
