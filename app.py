@@ -34,10 +34,10 @@ def calcular_metricas(dataset):
 def crear_datos_evaluacion():
     return [
         {'clima_val': 1.0, 'hora_val': 8.0, 'zona_val': 1.0, 'clima': 'Sunny', 'hora': '08:00', 'zona': 'A', 'real': 3.2},
-        {'clima_val': 0.7, 'hora_val': 12.0, 'zona_val': 2.0, 'clima': 'Nublado', 'hora': '12:00', 'zona': 'B', 'real': 4.2},
-        {'clima_val': 0.3, 'hora_val': 17.0, 'zona_val': 3.0, 'clima': 'Lluvia', 'hora': '17:00', 'zona': 'C', 'real': 5.6},
-        {'clima_val': 0.7, 'hora_val': 20.0, 'zona_val': 1.0, 'clima': 'Nublado', 'hora': '20:00', 'zona': 'A', 'real': 4.4},
-        {'clima_val': 1.0, 'hora_val': 22.0, 'zona_val': 2.0, 'clima': 'Soleado', 'hora': '22:00', 'zona': 'B', 'real': 5.1},
+        {'clima_val': 0.7, 'hora_val': 12.0, 'zona_val': 2.0, 'clima': 'Cloudy', 'hora': '12:00', 'zona': 'B', 'real': 4.2},
+        {'clima_val': 0.3, 'hora_val': 17.0, 'zona_val': 3.0, 'clima': 'Rain', 'hora': '17:00', 'zona': 'C', 'real': 5.6},
+        {'clima_val': 0.7, 'hora_val': 20.0, 'zona_val': 1.0, 'clima': 'Cloudy', 'hora': '20:00', 'zona': 'A', 'real': 4.4},
+        {'clima_val': 1.0, 'hora_val': 22.0, 'zona_val': 2.0, 'clima': 'Sunny', 'hora': '22:00', 'zona': 'B', 'real': 5.1},
     ]
 
 
@@ -121,24 +121,24 @@ def fase3():
     riesgos = [
         {
             'nivel': 'Alto',
-            'nombre': 'Datos limitados',
-            'descripcion': 'Se evalúa el modelo con una muestra pequeña de casos reales.',
-            'indicador': 'Pocas observaciones para generalizar',
-            'recomendacion': 'Recolectar más datos históricos antes de producir decisiones comerciales.',
+            'nombre': 'Limited data volume',
+            'descripcion': 'The model is evaluated on a small sample of real cases.',
+            'indicador': 'Few observations for generalization',
+            'recomendacion': 'Collect more historical data before using the model for operational decisions.',
         },
         {
             'nivel': 'Medio',
-            'nombre': 'Sensibilidad al clima',
-            'descripcion': 'Las predicciones cambian según la condición meteorológica y la zona.',
-            'indicador': 'MAPE moderado y variación entre pliegues',
-            'recomendacion': 'Validar con nuevas condiciones meteorológicas y de tráfico.',
+            'nombre': 'Weather sensitivity',
+            'descripcion': 'Predictions vary depending on weather conditions and location.',
+            'indicador': 'Moderate MAPE and fold-to-fold variation',
+            'recomendacion': 'Validate with additional weather and traffic conditions.',
         },
         {
             'nivel': 'Bajo',
-            'nombre': 'Evolución estacional',
-            'descripcion': 'El comportamiento de ocupación puede variar según la temporada.',
-            'indicador': 'Cambios futuros en el patrón de uso',
-            'recomendacion': 'Reentrenar el modelo con datos recientes cada cierto tiempo.',
+            'nombre': 'Seasonal variation',
+            'descripcion': 'Occupancy behavior may change across different seasons.',
+            'indicador': 'Future shifts in usage patterns',
+            'recomendacion': 'Retrain the model with recent data periodically.',
         },
     ]
 
