@@ -96,6 +96,7 @@ def fase2():
  
 # -------- PHASE 3: EVALUATION --------
 @app.route('/evaluacion')
+@app.route('/evaluation')
 def fase3():
     base_samples = crear_datos_evaluacion()
     for item in base_samples:
