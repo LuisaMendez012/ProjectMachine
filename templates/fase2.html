@@ -1,826 +1,201 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phase 2 — Preparation and Modeling</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #0b0f0e;
-            --surface: #111815;
-            --surface2: #172019;
-            --border: #1e2e25;
-            --accent: #3de88a;
-            --accent2: #1aad5e;
-            --accent-dim: rgba(61, 232, 138, 0.12);
-            --accent-glow: rgba(61, 232, 138, 0.06);
-            --text: #e8f0ec;
-            --text-muted: #7a9485;
-            --text-dim: #3e5c4a;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'DM Sans', sans-serif;
-            font-weight: 300;
-            line-height: 1.75;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image:
-                radial-gradient(ellipse 80% 60% at 20% -10%, rgba(61,232,138,0.07) 0%, transparent 60%),
-                radial-gradient(ellipse 60% 50% at 80% 110%, rgba(26,173,94,0.05) 0%, transparent 60%);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .grid-bg {
-            position: fixed;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(61,232,138,0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(61,232,138,0.03) 1px, transparent 1px);
-            background-size: 48px 48px;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .wrapper {
-            position: relative;
-            z-index: 1;
-            max-width: 860px;
-            margin: 0 auto;
-            padding: 0 2rem 6rem;
-        }
-
-        /* Header */
-        .site-header {
-            padding: 3.5rem 0 2rem;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 4rem;
-        }
-
-        .phase-label {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-family: 'Syne', sans-serif;
-            font-size: 0.72rem;
-            font-weight: 600;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: var(--accent);
-            background: var(--accent-dim);
-            border: 1px solid rgba(61,232,138,0.2);
-            border-radius: 100px;
-            padding: 0.35rem 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .phase-label::before {
-            content: '';
-            width: 6px; height: 6px;
-            border-radius: 50%;
-            background: var(--accent);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(0.7); }
-        }
-
-        h1 {
-            font-family: 'Syne', sans-serif;
-            font-size: clamp(2rem, 5vw, 3.2rem);
-            font-weight: 800;
-            line-height: 1.1;
-            letter-spacing: -0.03em;
-            color: var(--text);
-            margin-bottom: 1rem;
-        }
-
-        h1 span { color: var(--accent); }
-
-        .header-sub {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            max-width: 540px;
-        }
-
-        /* Progress nav */
-        .progress-nav {
-            display: flex;
-            align-items: center;
-            margin-bottom: 4rem;
-        }
-
-        .progress-step {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.75rem;
-            font-family: 'Syne', sans-serif;
-            font-weight: 600;
-            letter-spacing: 0.05em;
-            color: var(--text-dim);
-            text-transform: uppercase;
-        }
-
-        .progress-step.done { color: var(--accent2); }
-        .progress-step.active { color: var(--accent); }
-
-        .progress-step .dot {
-            width: 22px; height: 22px;
-            border-radius: 50%;
-            border: 1.5px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.65rem;
-            font-weight: 700;
-            flex-shrink: 0;
-        }
-
-        .progress-step.done .dot {
-            background: var(--accent2);
-            border-color: var(--accent2);
-            color: #0b0f0e;
-        }
-
-        .progress-step.active .dot {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: #0b0f0e;
-            box-shadow: 0 0 12px rgba(61,232,138,0.4);
-        }
-
-        .progress-line {
-            flex: 1;
-            height: 1px;
-            background: var(--border);
-            margin: 0 0.75rem;
-        }
-
-        .progress-line.done {
-            background: var(--accent2);
-            opacity: 0.4;
-        }
-
-        /* Sections */
-        .section {
-            margin-bottom: 2rem;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeUp 0.6s ease forwards;
-        }
-
-        .section:nth-child(1) { animation-delay: 0.05s; }
-        .section:nth-child(2) { animation-delay: 0.12s; }
-        .section:nth-child(3) { animation-delay: 0.19s; }
-        .section:nth-child(4) { animation-delay: 0.26s; }
-        .section:nth-child(5) { animation-delay: 0.33s; }
-        .section:nth-child(6) { animation-delay: 0.40s; }
-        .section:nth-child(7) { animation-delay: 0.47s; }
-
-        @keyframes fadeUp {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .section-inner {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 2.2rem 2.5rem;
-            position: relative;
-            overflow: hidden;
-            transition: border-color 0.3s;
-        }
-
-        .section-inner:hover { border-color: rgba(61,232,138,0.2); }
-
-        .section-inner::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .section-inner:hover::before { opacity: 1; }
-
-        .section-header {
-            display: flex;
-            align-items: flex-start;
-            gap: 1.2rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .section-number {
-            font-family: 'Syne', sans-serif;
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: var(--accent);
-            letter-spacing: 0.1em;
-            background: var(--accent-dim);
-            border: 1px solid rgba(61,232,138,0.15);
-            border-radius: 8px;
-            padding: 0.3rem 0.65rem;
-            margin-top: 0.3rem;
-            flex-shrink: 0;
-        }
-
-        h2 {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.25rem;
-            font-weight: 700;
-            letter-spacing: -0.01em;
-            color: var(--text);
-            line-height: 1.3;
-        }
-
-        p {
-            font-size: 0.95rem;
-            color: #a8bfb4;
-            line-height: 1.8;
-            margin-bottom: 0.85rem;
-        }
-
-        p:last-child { margin-bottom: 0; }
-
-        /* Card grid */
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-            gap: 0.75rem;
-            margin-top: 1rem;
-        }
-
-        .card-item {
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 0.85rem 1.1rem;
-            font-size: 0.88rem;
-            color: #c4d9ce;
-            display: flex;
-            align-items: center;
-            gap: 0.7rem;
-            transition: all 0.2s;
-        }
-
-        .card-item:hover {
-            background: var(--accent-dim);
-            border-color: rgba(61,232,138,0.25);
-            color: var(--text);
-            transform: translateX(3px);
-        }
-
-        .card-item::before {
-            content: '';
-            width: 6px; height: 6px;
-            border-radius: 50%;
-            background: var(--accent);
-            flex-shrink: 0;
-            opacity: 0.6;
-        }
-
-        /* Split row */
-        .split-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .split-card {
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.2rem 1.4rem;
-            text-align: center;
-            transition: all 0.2s;
-        }
-
-        .split-card:hover {
-            border-color: rgba(61,232,138,0.25);
-            background: var(--accent-dim);
-        }
-
-        .split-card .pct {
-            font-family: 'Syne', sans-serif;
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--accent);
-            display: block;
-            line-height: 1;
-            margin-bottom: 0.3rem;
-        }
-
-        .split-card .label {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            font-family: 'Syne', sans-serif;
-            font-weight: 600;
-        }
-
-        /* Model comparison table */
-        .model-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
-            margin-top: 0.5rem;
-        }
-
-        .model-item {
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 0.9rem 1.2rem;
-            font-size: 0.9rem;
-            color: #c4d9ce;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            transition: all 0.2s;
-        }
-
-        .model-item:hover {
-            border-color: rgba(61,232,138,0.2);
-            background: var(--accent-dim);
-            color: var(--text);
-        }
-
-        .model-icon {
-            width: 32px; height: 32px;
-            border-radius: 8px;
-            background: var(--accent-dim);
-            border: 1px solid rgba(61,232,138,0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-            flex-shrink: 0;
-        }
-
-        /* Metrics */
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0.75rem;
-            margin-top: 0.5rem;
-        }
-
-        .metric-card {
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.2rem;
-            text-align: center;
-            transition: all 0.2s;
-        }
-
-        .metric-card:hover {
-            border-color: rgba(61,232,138,0.25);
-            background: var(--accent-dim);
-        }
-
-        .metric-card .metric-name {
-            font-family: 'Syne', sans-serif;
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--accent);
-            letter-spacing: 0.1em;
-            display: block;
-            margin-bottom: 0.4rem;
-        }
-
-        .metric-card .metric-desc {
-            font-size: 0.78rem;
-            color: var(--text-muted);
-            line-height: 1.4;
-        }
-
-        /* Result highlight */
-        .result-box {
-            background: linear-gradient(135deg, rgba(61,232,138,0.08) 0%, rgba(26,173,94,0.05) 100%);
-            border: 1px solid rgba(61,232,138,0.25);
-            border-radius: 14px;
-            padding: 1.8rem 2rem;
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-            margin-top: 0.5rem;
-        }
-
-        .result-score {
-            text-align: center;
-            flex-shrink: 0;
-        }
-
-        .result-score .big-num {
-            font-family: 'Syne', sans-serif;
-            font-size: 3rem;
-            font-weight: 800;
-            color: var(--accent);
-            display: block;
-            line-height: 1;
-        }
-
-        .result-score .score-label {
-            font-family: 'Syne', sans-serif;
-            font-size: 0.7rem;
-            font-weight: 700;
-            letter-spacing: 0.12em;
-            color: var(--accent2);
-            text-transform: uppercase;
-        }
-
-        .result-divider {
-            width: 1px;
-            height: 60px;
-            background: rgba(61,232,138,0.2);
-            flex-shrink: 0;
-        }
-
-        .result-desc {
-            font-size: 0.9rem;
-            color: #a8bfb4;
-            line-height: 1.7;
-        }
-
-        .result-desc strong {
-            color: var(--text);
-            font-weight: 500;
-        }
-
-        /* CTA */
-        .cta-section {
-            margin-top: 4rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 2rem 2.5rem;
-            gap: 2rem;
-        }
-
-        .cta-nav {
-            display: flex;
-            gap: 1rem;
-            flex-shrink: 0;
-        }
-
-        .cta-text h3 {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--text);
-            margin-bottom: 0.3rem;
-        }
-
-        .cta-text p {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin: 0;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-family: 'Syne', sans-serif;
-            font-size: 0.82rem;
-            font-weight: 700;
-            letter-spacing: 0.04em;
-            text-decoration: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 100px;
-            transition: all 0.2s;
-            white-space: nowrap;
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: var(--text-muted);
-            border: 1px solid var(--border);
-        }
-
-        .btn-outline:hover {
-            border-color: rgba(61,232,138,0.3);
-            color: var(--text);
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: #0b0f0e;
-            border: 1px solid var(--accent);
-        }
-
-        .btn-primary:hover {
-            background: #60f0a0;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(61,232,138,0.3);
-        }
-
-        .btn-primary::after { content: '→'; }
-
-        @media (max-width: 640px) {
-            .metrics-grid { grid-template-columns: 1fr; }
-            .split-row { grid-template-columns: 1fr; }
-            .cta-section { flex-direction: column; align-items: flex-start; }
-            .section-inner { padding: 1.5rem; }
-            .progress-step span { display: none; }
-            .result-box { flex-direction: column; text-align: center; }
-            .result-divider { width: 60px; height: 1px; }
-        }
-    </style>
-</head>
-<body>
-<div class="grid-bg"></div>
-
-<div class="wrapper">
-
-    <header class="site-header">
-        <div class="phase-label">Proyecto ML · Bogotá</div>
-        <h1>Preparación y<br><span>Modelamiento</span></h1>
-        <p class="header-sub">Limpieza de datos, selección de variables y entrenamiento de modelos predictivos de machine learning.</p>
-    </header>
-
-    <nav class="progress-nav">
-        <div class="progress-step done">
-            <div class="dot">✓</div>
-            <span>Entendimiento</span>
+{% extends 'base.html' %}
+
+{% block title %}Phase 2 — Preparation and Modeling{% endblock %}
+
+{% block content %}
+
+<section class="section">
+    <div class="section-inner">
+        <div class="phase-label">ML Project · Bogota</div>
+        <h1>Model Training<br><span>Occupancy Prediction</span></h1>
+        <p class="header-sub">Data preparation, feature selection, and evaluation for predictive modeling.</p>
+    </div>
+</section>
+
+<nav class="progress-nav">
+    <div class="progress-step done">
+        <div class="dot">✓</div>
+        <span>Understanding</span>
+    </div>
+    <div class="progress-line done"></div>
+    <div class="progress-step active">
+        <div class="dot">2</div>
+        <span>Model</span>
+    </div>
+    <div class="progress-line"></div>
+    <div class="progress-step">
+        <div class="dot">3</div>
+        <span>Evaluation</span>
+    </div>
+    <div class="progress-line"></div>
+    <div class="progress-step">
+        <div class="dot">4</div>
+        <span>Deployment</span>
+    </div>
+</nav>
+
+<section class="section">
+    <div class="section-inner">
+        <div class="section-header">
+            <div class="section-number">01</div>
+            <h2>Data Preparation</h2>
         </div>
-        <div class="progress-line done"></div>
-        <div class="progress-step active">
-            <div class="dot">2</div>
-            <span>Modelo</span>
+        <p>Before building the model, data is cleaned and transformed to ensure quality and consistency.</p>
+        <div class="card-grid">
+            <div class="card-item">Missing value handling</div>
+            <div class="card-item">Type correction</div>
+            <div class="card-item">Numeric normalization</div>
+            <div class="card-item">Categorical encoding</div>
         </div>
-        <div class="progress-line"></div>
-        <div class="progress-step">
-            <div class="dot">3</div>
-            <span>Evaluación</span>
-        </div>
-        <div class="progress-line"></div>
-        <div class="progress-step">
-            <div class="dot">4</div>
-            <span>Despliegue</span>
-        </div>
-    </nav>
+    </div>
+</section>
 
-    <main>
+<section class="section">
+    <div class="section-inner">
+        <div class="section-header">
+            <div class="section-number">02</div>
+            <h2>Feature Selection</h2>
+        </div>
+        <p>We select the variables with the strongest predictive power for occupancy.</p>
+        <div class="card-grid">
+            <div class="card-item">Hour of day</div>
+            <div class="card-item">Day of week</div>
+            <div class="card-item">Temperature</div>
+            <div class="card-item">Precipitation</div>
+            <div class="card-item">Location</div>
+        </div>
+    </div>
+</section>
 
-        <div class="section">
-            <div class="section-inner">
-                <div class="section-header">
-                    <div class="section-number">01</div>
-                    <h2>Preparación de los Datos</h2>
-                </div>
-                <p>Antes de construir el modelo, se realiza una limpieza y transformación exhaustiva de los datos para garantizar su calidad e integridad.</p>
-                <div class="card-grid">
-                    <div class="card-item">Eliminación de valores nulos</div>
-                    <div class="card-item">Corrección de tipos de datos</div>
-                    <div class="card-item">Normalización numérica</div>
-                    <div class="card-item">Codificación categórica</div>
-                </div>
+<section class="section">
+    <div class="section-inner">
+        <div class="section-header">
+            <div class="section-number">03</div>
+            <h2>Dataset Split</h2>
+        </div>
+        <p>The dataset is divided into training and test sets to measure performance on unseen data.</p>
+        <div class="split-row">
+            <div class="split-card">
+                <span class="pct">80%</span>
+                <span class="label">Training</span>
+            </div>
+            <div class="split-card">
+                <span class="pct">20%</span>
+                <span class="label">Testing</span>
             </div>
         </div>
+    </div>
+</section>
 
-        <div class="section">
-            <div class="section-inner">
-                <div class="section-header">
-                    <div class="section-number">02</div>
-                    <h2>Selección de Variables</h2>
-                </div>
-                <p>Se seleccionan las variables con mayor poder predictivo sobre el nivel de ocupación:</p>
-                <div class="card-grid">
-                    <div class="card-item">Hora del día</div>
-                    <div class="card-item">Día de la semana</div>
-                    <div class="card-item">Temperatura</div>
-                    <div class="card-item">Precipitación</div>
-                    <div class="card-item">Ubicación</div>
-                </div>
+<section class="section">
+    <div class="section-inner">
+        <div class="section-header">
+            <div class="section-number">04</div>
+            <h2>Models Evaluated</h2>
+        </div>
+        <p>We compare different algorithms with varying generalization capabilities.</p>
+        <div class="model-list">
+            <div class="model-item">Linear Regression — baseline reference</div>
+            <div class="model-item">Decision Tree — interpretable and non-linear</div>
+            <div class="model-item">Random Forest — ensemble of trees</div>
+            <div class="model-item">XGBoost — boosted decision trees</div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="section-inner">
+        <div class="section-header">
+            <div class="section-number">05</div>
+            <h2>Model Training</h2>
+        </div>
+        <p>Each model is trained on the training set and tuned with cross-validation to reduce overfitting.</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="section-inner">
+        <div class="section-header">
+            <div class="section-number">06</div>
+            <h2>Evaluation Metrics</h2>
+        </div>
+        <p>Standard metrics are used to compare the models objectively:</p>
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <span class="metric-name">MAE</span>
+                <span class="metric-desc">Mean absolute error measures average error magnitude.</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-name">RMSE</span>
+                <span class="metric-desc">Root mean squared error penalizes larger mistakes.</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-name">R²</span>
+                <span class="metric-desc">Explained variance shows how well the model fits the data.</span>
             </div>
         </div>
+    </div>
+</section>
 
-        <div class="section">
-            <div class="section-inner">
-                <div class="section-header">
-                    <div class="section-number">03</div>
-                    <h2>División del Dataset</h2>
-                </div>
-                <p>El dataset se divide en conjuntos de entrenamiento y prueba para medir el desempeño real del modelo sobre datos no vistos.</p>
-                <div class="split-row">
-                    <div class="split-card">
-                        <span class="pct">80%</span>
-                        <span class="label">Entrenamiento</span>
-                    </div>
-                    <div class="split-card">
-                        <span class="pct">20%</span>
-                        <span class="label">Prueba</span>
-                    </div>
-                </div>
-            </div>
+<section class="section">
+    <div class="section-inner">
+        <div class="section-header">
+            <div class="section-number">07</div>
+            <h2>Model Results</h2>
         </div>
-
-        <div class="section">
-            <div class="section-inner">
-                <div class="section-header">
-                    <div class="section-number">04</div>
-                    <h2>Modelos Utilizados</h2>
-                </div>
-                <p>Se evalúan cuatro algoritmos con diferentes niveles de complejidad y capacidad de generalización:</p>
-                <div class="model-list">
-                    <div class="model-item">
-                        <div class="model-icon">📈</div>
-                        Regresión Lineal — modelo base de referencia
-                    </div>
-                    <div class="model-item">
-                        <div class="model-icon">🌿</div>
-                        Árbol de Decisión — interpretable y no lineal
-                    </div>
-                    <div class="model-item">
-                        <div class="model-icon">🌲</div>
-                        Random Forest — conjunto de árboles con bagging
-                    </div>
-                    <div class="model-item">
-                        <div class="model-icon">⚡</div>
-                        XGBoost — boosting con alta precisión
-                    </div>
-                </div>
+        <div class="result-box">
+            <div class="result-score">
+                <span class="big-num">0.87</span>
+                <span class="score-label">R² Score</span>
             </div>
+            <div class="result-divider"></div>
+            <p class="result-desc">The Random Forest model achieved the best performance with R² = 0.87, explaining most of the variance in bike parking occupancy.</p>
         </div>
+    </div>
+</section>
 
-        <div class="section">
-            <div class="section-inner">
-                <div class="section-header">
-                    <div class="section-number">05</div>
-                    <h2>Entrenamiento del Modelo</h2>
-                </div>
-                <p>Cada modelo se entrena con el conjunto de entrenamiento, ajustando sus hiperparámetros mediante validación cruzada para mejorar la generalización y reducir el sobreajuste.</p>
+<section class="section">
+    <div class="section-inner">
+        <div class="section-header">
+            <div class="section-number">08</div>
+            <h2>Prediction Simulator</h2>
+        </div>
+        <p>Test the current model with user inputs and see the predicted occupancy value.</p>
+        <form method="POST" class="input-group">
+            <label for="clima">Weather index (0-10)</label>
+            <input type="number" name="clima" id="clima" min="0" max="10" step="0.1" required>
+
+            <label for="hora">Hour of day (0-23)</label>
+            <input type="number" name="hora" id="hora" min="0" max="23" step="1" required>
+
+            <label for="zona">Geographic zone (1-5)</label>
+            <input type="number" name="zona" id="zona" min="1" max="5" step="1" required>
+
+            <button type="submit" class="btn btn-primary">Predict occupancy</button>
+        </form>
+
+        {% if resultado is not none %}
+        <div class="result-box">
+            <div class="result-score">
+                <span class="big-num">{{ resultado }}</span>
+                <span class="score-label">Prediction</span>
             </div>
+            <div class="result-divider"></div>
+            <p class="result-desc">Result generated by the machine learning model.</p>
         </div>
-
-        <div class="section">
-            <div class="section-inner">
-                <div class="section-header">
-                    <div class="section-number">06</div>
-                    <h2>Métricas de Evaluación</h2>
-                </div>
-                <p>Se utilizan tres métricas estándar para comparar el desempeño de cada modelo de forma objetiva:</p>
-                <div class="metrics-grid">
-                    <div class="metric-card">
-                        <span class="metric-name">MAE</span>
-                        <span class="metric-desc">Error Absoluto Medio — magnitud promedio del error</span>
-                    </div>
-                    <div class="metric-card">
-                        <span class="metric-name">RMSE</span>
-                        <span class="metric-desc">Raíz del Error Cuadrático Medio — penaliza errores grandes</span>
-                    </div>
-                    <div class="metric-card">
-                        <span class="metric-name">R²</span>
-                        <span class="metric-desc">Coeficiente de Determinación — varianza explicada</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="section">
-            <div class="section-inner">
-                <div class="section-header">
-                    <div class="section-number">07</div>
-                    <h2>Resultados</h2>
-                </div>
-                <div class="result-box">
-                    <div class="result-score">
-                        <span class="big-num">0.87</span>
-                        <span class="score-label">R² Score</span>
-                    </div>
-                    <div class="result-divider"></div>
-                    <p class="result-desc">El modelo de <strong>Random Forest</strong> obtuvo el mejor desempeño con un R² de 0.87, indicando que explica el 87% de la varianza en la ocupación de los cicloparqueaderos. Supera a los demás algoritmos evaluados en todas las métricas.</p>
-                </div>
-            </div>
-        </div>
-
-    </main>
+        {% endif %}
+    </div>
+</section>
 
 <div class="cta-section">
     <div class="cta-text">
-        <h3>Continuar al siguiente paso</h3>
-        <p>Evaluación detallada del modelo ganador</p>
+        <h3>Continue to the next step</h3>
+        <p>Evaluate model performance and diagnostics</p>
     </div>
-
     <div class="cta-nav">
-        <a href="/entendimiento" class="btn btn-outline">
-            ← Fase 1
-        </a>
-
-        <a href="/evaluacion" class="btn btn-primary">
-            Fase 3 — Evaluación
-        </a>
+        <a href="/" class="btn btn-outline">← Home</a>
+        <a href="/evaluacion" class="btn btn-primary">Phase 3 — Evaluation</a>
     </div>
 </div>
 
-<div class="section">
-    <div class="section-inner">
-
-        <div class="section-header">
-            <div class="section-number">08</div>
-            <h2>Ejemplo de Ingreso de Datos</h2>
-        </div>
-
-        <p>
-            Valores recomendados para la variable clima:
-        </p>
-
-        <div class="model-list">
-
-            <div class="model-item">
-                <div class="model-icon">☀️</div>
-                Soleado — 1.0
-            </div>
-
-            <div class="model-item">
-                <div class="model-icon">☁️</div>
-                Nublado — 0.7
-            </div>
-
-            <div class="model-item">
-                <div class="model-icon">🌧️</div>
-                Lluvia — 0.3
-            </div>
-
-            <div class="model-item">
-                <div class="model-icon">⛈️</div>
-                Tormenta — 0.1
-            </div>
-
-        </div>
-
-        <form method="POST" style="margin-top: 2rem;">
-
-            <p><strong>Clima:</strong></p>
-            <input type="number" step="any" name="clima" required>
-
-            <br><br>
-
-            <p><strong>Hora:</strong></p>
-            <input type="number" step="any" name="hora" required>
-
-            <br><br>
-
-            <p><strong>Zona:</strong></p>
-            <input type="number" step="any" name="zona" required>
-
-            <br><br>
-
-            <button type="submit" class="btn btn-primary">
-                Predecir Ocupación
-            </button>
-
-        </form>
-
-        {% if resultado %}
-        <div class="result-box" style="margin-top: 2rem;">
-
-            <div class="result-score">
-                <span class="big-num">
-                    {{ resultado }}
-                </span>
-
-                <span class="score-label">
-                    Predicción
-                </span>
-            </div>
-
-            <div class="result-divider"></div>
-
-            <p class="result-desc">
-                Resultado generado por el modelo de machine learning.
-            </p>
-
-        </div>
-        {% endif %}
-
-    </div>
-</div>
-</div>
-</body>
-</html>
+{% endblock %}
