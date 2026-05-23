@@ -32,6 +32,24 @@ def calcular_metricas(dataset):
     }
 
 
+def seleccionar_mejor_model(cv_linear, rf_cv):
+    best = {
+        'name': 'Linear Regression',
+        'reason': 'Linear Regression is the reference model used for baseline comparison.',
+        'model_key': 'linear',
+        'metrics': cv_linear.get('resumen', {}),
+    }
+    if isinstance(rf_cv, dict) and 'error' not in rf_cv:
+        if rf_cv['resumen']['r2_mean'] >= cv_linear['resumen']['r2_mean'] and rf_cv['resumen']['rmse_mean'] <= cv_linear['resumen']['rmse_mean']:
+            best = {
+                'name': 'Random Forest',
+                'reason': 'Random Forest achieves stronger cross-validated metrics and is selected as the preferred production model.',
+                'model_key': 'rf',
+                'metrics': rf_cv.get('resumen', {}),
+            }
+    return best
+
+
 # -------- PHASE 1: BUSINESS UNDERSTANDING --------
 @app.route('/')
 def fase1():
@@ -53,6 +71,7 @@ def fase2():
 # -------- PHASE 3: EVALUATION --------
 @app.route('/evaluacion')
 @app.route('/evaluation')
+@app.route('/fase3')
 def fase3():
     base_samples = crear_datos_evaluacion()
     for item in base_samples:
@@ -80,6 +99,8 @@ def fase3():
     except Exception as e:
         rf_cv = {'error': str(e)}
 
+    page_errors = []
+
     # K-Means clustering analysis and visualization
     try:
         kmeans_data = run_kmeans(n_clusters=4)
@@ -87,14 +108,25 @@ def fase3():
     except Exception as e:
         kmeans_data = {'error': str(e)}
         kmeans_plot = None
+        page_errors.append('K-Means analysis failed: ' + str(e))
 
-    prediction_plot = plot_prediction_vs_actual([item['real'] for item in base_samples], [item['pred'] for item in base_samples])
-    metrics_plot = plot_metrics_summary(m)
+    try:
+        prediction_plot = plot_prediction_vs_actual([item['real'] for item in base_samples], [item['pred'] for item in base_samples])
+    except Exception as e:
+        prediction_plot = None
+        page_errors.append('Prediction plot generation failed: ' + str(e))
+
+    try:
+        metrics_plot = plot_metrics_summary(m)
+    except Exception as e:
+        metrics_plot = None
+        page_errors.append('Metrics summary chart failed: ' + str(e))
 
     try:
         comparison_plot = plot_model_comparison(cv, rf_cv)
-    except Exception:
+    except Exception as e:
         comparison_plot = None
+        page_errors.append('Model comparison chart failed: ' + str(e))
 
     riesgos = [
         {
@@ -127,21 +159,7 @@ def fase3():
     ])
     mb = baseline_metrics
 
-    best_model = {
-        'name': 'Linear Regression',
-        'reason': 'Linear Regression is the reference model used for baseline comparison, and it has stable fold performance.'
-    }
-    if isinstance(rf_cv, dict) and 'error' not in rf_cv:
-        if rf_cv['resumen']['r2_mean'] >= cv['resumen']['r2_mean'] and rf_cv['resumen']['rmse_mean'] <= cv['resumen']['rmse_mean']:
-            best_model = {
-                'name': 'Random Forest',
-                'reason': 'Random Forest achieves equal or better cross-validated R² and lower RMSE than Linear Regression, making it the preferred regression model.'
-            }
-        else:
-            best_model = {
-                'name': 'Linear Regression',
-                'reason': 'Linear Regression retains a simpler structure and competitive cross-validation metrics in this dataset.'
-            }
+    best_model = seleccionar_mejor_model(cv, rf_cv)
 
     return render_template(
         'fase3.html',
@@ -156,7 +174,69 @@ def fase3():
         riesgos=riesgos,
         mb=mb,
         best_model=best_model,
+        page_errors=page_errors,
         active_page='evaluation'
+    )
+
+
+@app.route('/prediction', methods=['GET', 'POST'])
+@app.route('/prediction-system', methods=['GET', 'POST'])
+def prediction():
+    error = None
+    resultado = None
+    selected_model = None
+    reliability = None
+    input_values = {'clima': '', 'hora': '', 'zona': ''}
+
+    cv = calcular_validacion_cruzada(k=5)
+    try:
+        rf_cv = cross_validate_rf(k=5)
+    except Exception as e:
+        rf_cv = {'error': str(e)}
+
+    best_model = seleccionar_mejor_model(cv, rf_cv)
+
+    if request.method == 'POST':
+        input_values['clima'] = request.form.get('clima', '').strip()
+        input_values['hora'] = request.form.get('hora', '').strip()
+        input_values['zona'] = request.form.get('zona', '').strip()
+
+        if not input_values['clima'] or not input_values['hora'] or not input_values['zona']:
+            error = 'All fields are required to make a prediction.'
+        else:
+            try:
+                clima = float(input_values['clima'])
+                hora = float(input_values['hora'])
+                zona = float(input_values['zona'])
+
+                if best_model['model_key'] == 'rf' and 'error' not in rf_cv:
+                    model = train_random_forest()
+                    resultado = predict_rf(clima, hora, zona, model=model)
+                else:
+                    resultado = predecir_ocupacion(clima, hora, zona)
+
+                selected_model = best_model['name']
+                reliability = {
+                    'mae': best_model['metrics'].get('mae_mean'),
+                    'mse': best_model['metrics'].get('mse_mean'),
+                    'rmse': best_model['metrics'].get('rmse_mean'),
+                    'mape': best_model['metrics'].get('mape_mean'),
+                    'r2': best_model['metrics'].get('r2_mean'),
+                }
+            except ValueError:
+                error = 'Please enter valid numeric values for all fields.'
+            except Exception as e:
+                error = 'Prediction failed: ' + str(e)
+
+    return render_template(
+        'prediction.html',
+        resultado=resultado,
+        error=error,
+        selected_model=selected_model,
+        reliability=reliability,
+        input_values=input_values,
+        best_model=best_model,
+        active_page='prediction'
     )
 
 
