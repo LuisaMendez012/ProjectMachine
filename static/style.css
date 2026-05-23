@@ -340,6 +340,39 @@ tr:hover {
     margin-bottom: 0.4rem;
 }
 
+.prediction-summary-card,
+.reliability-card,
+.prediction-result-card {
+    padding: 1.5rem;
+    background: rgba(61, 232, 138, 0.05);
+    border: 1px solid rgba(61, 232, 138, 0.24);
+}
+
+.prediction-result-card {
+    margin-top: 1rem;
+}
+
+.prediction-value {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--accent);
+    margin: 0.75rem 0;
+}
+
+.input-hint {
+    display: block;
+    margin-top: 0.25rem;
+    color: var(--text-alt);
+    font-size: 0.9rem;
+}
+
+.prediction-summary-card .note,
+.reliability-card .note,
+.prediction-result-card .note {
+    margin-top: 1rem;
+    color: var(--text-alt);
+}
+
 .metric-box .label {
     color: var(--text-alt);
     font-size: 0.9rem;

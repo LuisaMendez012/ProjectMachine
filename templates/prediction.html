@@ -9,67 +9,107 @@
             <div class="section-number">05</div>
             <div>
                 <h2>Prediction System</h2>
-                <p>Use the selected best model from Activity 2 to make a new occupancy prediction.</p>
+                <p>Use the selected best model from Activity 2 to make a new occupancy prediction for Bogotá.</p>
             </div>
         </div>
-        <div class="card">
-            <h3>Model selection</h3>
-            <p>The system chooses the best-performing model based on cross-validation metrics from the evaluation phase.</p>
-            <p><strong>Selected model:</strong> {{ best_model.name }}</p>
-            <p>{{ best_model.reason }}</p>
+
+        <div class="card prediction-summary-card">
+            <h3>Selected Model Information</h3>
+            <p>The best model is selected using the Activity 2 evaluation results and cross-validation metrics.</p>
+            <div class="metrics-grid">
+                <div class="metric-box">
+                    <div class="value">{{ best_model.name }}</div>
+                    <div class="label">Selected model</div>
+                </div>
+                <div class="metric-box">
+                    <div class="value">{{ best_model.metrics.r2_mean | default('N/A') }}</div>
+                    <div class="label">R² mean</div>
+                </div>
+                <div class="metric-box">
+                    <div class="value">{{ best_model.metrics.rmse_mean | default('N/A') }}</div>
+                    <div class="label">RMSE mean</div>
+                </div>
+                <div class="metric-box">
+                    <div class="value">{{ best_model.metrics.mae_mean | default('N/A') }}</div>
+                    <div class="label">MAE mean</div>
+                </div>
+                <div class="metric-box">
+                    <div class="value">{{ best_model.metrics.mape_mean | default('N/A') }}%</div>
+                    <div class="label">MAPE mean</div>
+                </div>
+            </div>
+            <p class="note">{{ best_model.reason }}</p>
+        </div>
+
+        <div class="card reliability-card">
+            <h3>Prediction Reliability</h3>
+            <p>The prediction is a regression estimate. Expected uncertainty is described by the model's RMSE.</p>
+            <div class="metrics-grid">
+                <div class="metric-box">
+                    <div class="value">{{ best_model.metrics.rmse_mean | default('N/A') }}</div>
+                    <div class="label">Validation RMSE</div>
+                </div>
+                <div class="metric-box">
+                    <div class="value">{{ best_model.metrics.mape_mean | default('N/A') }}%</div>
+                    <div class="label">Validation MAPE</div>
+                </div>
+            </div>
+            <p class="note">The prediction may vary approximately ±{{ best_model.metrics.rmse_mean | default('N/A') }} units according to validation results.</p>
+            <p>The numerical estimate should be used as a guidance value rather than an exact count.</p>
         </div>
 
         <div class="card">
             <h3>Manual Prediction Input</h3>
-            <form method="POST" action="/prediction" class="input-group">
-                <label for="clima">Weather situation (1 = Clear, 2 = Mist, 3 = Light rain, 4 = Heavy rain)</label>
-                <input type="number" name="clima" id="clima" min="1" max="4" step="1" required value="{{ input_values.clima }}">
-
-                <label for="hora">Hour of day (0-23)</label>
-                <input type="number" name="hora" id="hora" min="0" max="23" step="1" required value="{{ input_values.hora }}">
-
-                <label for="zona">Climate period (1 = Dry, 2 = Moderate rainfall, 3 = High rainfall, 4 = Variable)</label>
-                <input type="number" name="zona" id="zona" min="1" max="4" step="1" required value="{{ input_values.zona }}">
-                <small class="help-text">Use the same numeric categories as the dataset; the form labels are adapted for Bogotá.</small>
-
-                <button type="submit" class="btn btn-primary">Predict occupancy</button>
-            </form>
-
             {% if error %}
-            <div class="error-box" style="margin-top:16px;">
+            <div class="error-box">
                 <p>{{ error }}</p>
             </div>
             {% endif %}
+            <form method="POST" action="/prediction" class="input-group">
+                <label for="clima">Weather situation (1 = Clear, 2 = Mist, 3 = Light rain, 4 = Heavy rain)</label>
+                <input type="number" name="clima" id="clima" min="1" max="4" step="1" required value="{{ input_values.clima }}">
+                <small class="input-hint">Select the current Bogotá weather category used in the dataset.</small>
 
-            {% if resultado is not none %}
-            <div class="card" style="margin-top:16px; padding: 1.5rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(61,232,138,0.18);">
-                <h3>Prediction Result</h3>
-                <p><strong>Estimated occupancy:</strong> {{ resultado }}</p>
-                <p>The result is generated by the selected model and shown immediately below the form.</p>
-                {% if reliability %}
-                <div class="metrics-grid" style="margin-top:1rem;">
-                    <div class="metric-box">
-                        <div class="value">{{ reliability.mae }}</div>
-                        <div class="label">Expected MAE</div>
-                    </div>
-                    <div class="metric-box">
-                        <div class="value">{{ reliability.rmse }}</div>
-                        <div class="label">Expected RMSE</div>
-                    </div>
-                    <div class="metric-box">
-                        <div class="value">{{ reliability.mape }}%</div>
-                        <div class="label">Expected MAPE</div>
-                    </div>
-                    <div class="metric-box">
-                        <div class="value">{{ reliability.r2 }}</div>
-                        <div class="label">Cross-validated R²</div>
-                    </div>
+                <label for="hora">Hour of day (0-23)</label>
+                <input type="number" name="hora" id="hora" min="0" max="23" step="1" required value="{{ input_values.hora }}">
+                <small class="input-hint">Enter the hour in Bogotá local time.</small>
+
+                <label for="zona">Climatic period (1 = Dry period, 2 = Moderate rainfall period, 3 = High rainfall period, 4 = Variable weather period)</label>
+                <input type="number" name="zona" id="zona" min="1" max="4" step="1" required value="{{ input_values.zona }}">
+                <small class="input-hint">Use Bogotá-specific climate period labels.</small>
+
+                <button type="submit" class="btn btn-primary">Predict occupancy</button>
+            </form>
+        </div>
+
+        {% if resultado is not none %}
+        <div class="card prediction-result-card">
+            <h3>Prediction Result</h3>
+            <p class="prediction-value">{{ resultado }}</p>
+            <p>The estimate above is generated by the selected model and reflects the expected occupancy value for the entered conditions.</p>
+            {% if reliability %}
+            <div class="metrics-grid" style="margin-top:1rem;">
+                <div class="metric-box">
+                    <div class="value">{{ reliability.mae }}</div>
+                    <div class="label">Expected MAE</div>
                 </div>
-                <p class="note">These values describe the selected model's expected reliability based on cross-validation.</p>
-                {% endif %}
+                <div class="metric-box">
+                    <div class="value">{{ reliability.rmse }}</div>
+                    <div class="label">Expected RMSE</div>
+                </div>
+                <div class="metric-box">
+                    <div class="value">{{ reliability.mape }}%</div>
+                    <div class="label">Expected MAPE</div>
+                </div>
+                <div class="metric-box">
+                    <div class="value">{{ reliability.r2 }}</div>
+                    <div class="label">Cross-validated R²</div>
+                </div>
             </div>
+            <p class="note">These values describe the model's average validation performance and form the basis for prediction reliability.</p>
             {% endif %}
         </div>
+        {% endif %}
 
         <div class="cta-section">
             <div class="cta-text">
