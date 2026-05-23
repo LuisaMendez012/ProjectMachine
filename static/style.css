@@ -401,6 +401,38 @@ tr:hover {
     border-radius: 14px;
 }
 
+.error-box {
+    padding: 1rem 1.2rem;
+    margin-top: 1rem;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 16px;
+    color: #f8d7da;
+}
+
+.error-box strong {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #fecaca;
+}
+
+.error-box ul {
+    margin: 0;
+    padding-left: 1.2rem;
+}
+
+.error-box li {
+    margin-bottom: 0.4rem;
+}
+
+.note {
+    margin: 1rem 0;
+    padding: 0.85rem 1rem;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #cbd5e1;
+}
+
 .tabs {
     display: flex;
     gap: 0.75rem;

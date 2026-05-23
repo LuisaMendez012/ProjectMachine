@@ -12,6 +12,16 @@
                 <p>Review the performance metrics, cross-validation results, and risk assessment for the current occupancy model.</p>
             </div>
         </div>
+        {% if page_errors %}
+        <div class="error-box">
+            <strong>Page warnings:</strong>
+            <ul>
+                {% for err in page_errors %}
+                <li>{{ err }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
 
         <div class="tabs">
             <button class="tab-btn active" onclick="showTab('metrics', this)">Performance Metrics</button>
@@ -51,18 +61,24 @@
 
                 <p>R² closer to 1.0 indicates a better fit.</p>
                 <div class="bar-wrap">
-                    <div class="bar-fill" style="width: {{ m.r2_pct }}%;"></div>
+                    <div class="bar-fill" style="width: {{ m.r2_pct | default(0) }}%;"></div>
                 </div>
-                <p>{{ m.r2_pct }}% explained variance.</p>
+                <p>{{ m.r2_pct | default(0) }}% explained variance.</p>
+                {% if metrics_plot %}
                 <div style="margin-top:16px;">
                     <img src="/{{ metrics_plot }}" alt="Metrics summary" style="max-width:100%;height:auto;" />
                 </div>
+                {% else %}
+                <p class="note">Metrics chart unavailable.</p>
+                {% endif %}
             </div>
 
             <div class="card">
                 <h2>Prediction vs Actual</h2>
                 {% if prediction_plot %}
                 <img src="/{{ prediction_plot }}" alt="Prediction vs Actual" style="max-width:100%;height:auto;" />
+                {% else %}
+                <p class="note">Prediction chart unavailable.</p>
                 {% endif %}
                 <table>
                     <tr>
@@ -151,6 +167,8 @@
                     <h3>Cross-validated Model Comparison</h3>
                     <img src="/{{ comparison_plot }}" alt="Model comparison" style="max-width:100%;height:auto;" />
                 </div>
+                {% else %}
+                <p class="note">Model comparison chart unavailable.</p>
                 {% endif %}
             </div>
         </div>
@@ -174,6 +192,8 @@
                 <div style="margin-top:16px;">
                     <img src="/{{ kmeans_plot }}" alt="KMeans cluster counts" style="max-width:100%;height:auto;" />
                 </div>
+                {% else %}
+                <p class="note">K-Means count chart unavailable.</p>
                 {% endif %}
                 <div style="margin-top:16px; padding:16px; background:#020617; border:1px solid #38bdf8; border-radius:12px; color:#cbd5e1;">
                     <h3>K-Means evaluation</h3>

@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
+from sklearn.metrics import silhouette_score
 from model import load_dataset
 
 
@@ -66,6 +67,10 @@ def run_kmeans(n_clusters=4, random_state=42, save_path=None):
     unique, counts = np.unique(labels, return_counts=True)
     counts_map = {int(u): int(c) for u, c in zip(unique, counts)}
 
+    # Evaluation metrics for clustering
+    inertia = float(kmeans.inertia_)
+    silhouette = float(silhouette_score(Xs, labels)) if n_clusters > 1 else None
+
     # image_path relative to static folder for templates
     rel_path = os.path.join('static', 'images', 'kmeans_clusters.png')
 
@@ -75,6 +80,8 @@ def run_kmeans(n_clusters=4, random_state=42, save_path=None):
         'explanations': explanations,
         'counts': counts_map,
         'image_path': rel_path,
+        'inertia': inertia,
+        'silhouette': silhouette,
     }
 
 
