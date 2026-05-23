@@ -179,12 +179,40 @@ def fase3():
     )
 
 
+def validar_entrada_prediccion(clima, hora, zona):
+    errores = []
+    valores = {'clima': clima, 'hora': hora, 'zona': zona}
+
+    if clima.strip() == '' or hora.strip() == '' or zona.strip() == '':
+        errores.append('Todos los campos son obligatorios.')
+        return None, None, None, valores, errores
+
+    try:
+        clima_val = float(clima)
+        hora_val = float(hora)
+        zona_val = float(zona)
+    except ValueError:
+        errores.append('Ingrese valores numéricos válidos para clima, hora y periodo climático.')
+        return None, None, None, valores, errores
+
+    if not clima_val.is_integer() or clima_val < 1 or clima_val > 4:
+        errores.append('La categoría de clima debe ser un número entero entre 1 y 4.')
+    if not zona_val.is_integer() or zona_val < 1 or zona_val > 4:
+        errores.append('El periodo climático debe ser un número entero entre 1 y 4.')
+    if not hora_val.is_integer() or hora_val < 0 or hora_val > 23:
+        errores.append('La hora debe ser un número entero entre 0 y 23.')
+
+    if errores:
+        return None, None, None, valores, errores
+
+    return int(clima_val), int(hora_val), int(zona_val), valores, errores
+
+
 @app.route('/prediction', methods=['GET', 'POST'])
 @app.route('/prediction-system', methods=['GET', 'POST'])
 def prediction():
     error = None
     resultado = None
-    selected_model = None
     reliability = None
     input_values = {'clima': '', 'hora': '', 'zona': ''}
 
@@ -197,34 +225,29 @@ def prediction():
     best_model = seleccionar_mejor_model(cv, rf_cv)
 
     if request.method == 'POST':
-        input_values['clima'] = request.form.get('clima', '').strip()
-        input_values['hora'] = request.form.get('hora', '').strip()
-        input_values['zona'] = request.form.get('zona', '').strip()
+        clima = request.form.get('clima', '')
+        hora = request.form.get('hora', '')
+        zona = request.form.get('zona', '')
+        clima_val, hora_val, zona_val, input_values, errores = validar_entrada_prediccion(clima, hora, zona)
 
-        if not input_values['clima'] or not input_values['hora'] or not input_values['zona']:
-            error = 'All fields are required to make a prediction.'
+        if errores:
+            error = ' '.join(errores)
         else:
             try:
-                clima = float(input_values['clima'])
-                hora = float(input_values['hora'])
-                zona = float(input_values['zona'])
-
                 if best_model['model_key'] == 'rf' and 'error' not in rf_cv:
+                    # Use the cached Random Forest model for inference rather than retraining on every request.
                     model = train_random_forest()
-                    resultado = predict_rf(clima, hora, zona, model=model)
+                    resultado = predict_rf(clima_val, hora_val, zona_val, model=model)
                 else:
-                    resultado = predecir_ocupacion(clima, hora, zona)
+                    resultado = predecir_ocupacion(clima_val, hora_val, zona_val)
 
-                selected_model = best_model['name']
                 reliability = {
-                    'mae': best_model['metrics'].get('mae_mean'),
-                    'mse': best_model['metrics'].get('mse_mean'),
-                    'rmse': best_model['metrics'].get('rmse_mean'),
-                    'mape': best_model['metrics'].get('mape_mean'),
-                    'r2': best_model['metrics'].get('r2_mean'),
+                    'mae': best_model['metrics'].get('mae_mean', 'N/A'),
+                    'mse': best_model['metrics'].get('mse_mean', 'N/A'),
+                    'rmse': best_model['metrics'].get('rmse_mean', 'N/A'),
+                    'mape': best_model['metrics'].get('mape_mean', 'N/A'),
+                    'r2': best_model['metrics'].get('r2_mean', 'N/A'),
                 }
-            except ValueError:
-                error = 'Please enter valid numeric values for all fields.'
             except Exception as e:
                 error = 'Prediction failed: ' + str(e)
 
@@ -232,7 +255,6 @@ def prediction():
         'prediction.html',
         resultado=resultado,
         error=error,
-        selected_model=selected_model,
         reliability=reliability,
         input_values=input_values,
         best_model=best_model,
