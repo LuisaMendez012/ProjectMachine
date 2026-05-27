@@ -9,7 +9,9 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from model import FEATURE_NAMES
-
+from model import get_feature_means
+import requests
+from datetime import datetime
 
 def _build_matrix(rows):
     X = np.vstack([_build_feature_vector(row) for row in rows])
@@ -31,7 +33,6 @@ def predict_rf(clima, hora, zona, model=None):
     hora = float(hora)
     zona = float(zona)
     # Build feature vector consistent with linear model
-    from model import get_feature_means
     means = get_feature_means()
     feature_vector = np.array([
         hora,
@@ -52,6 +53,33 @@ def predict_rf(clima, hora, zona, model=None):
 
     pred = model.predict(feature_vector.reshape(1, -1))[0]
     return float(round(float(pred), 2))
+
+
+
+def predict_auto(lugar, zona):
+    
+    # ⏰ hora automática
+    hora = datetime.now().hour
+
+    # 🌦️ clima desde API (temporal simple)
+    try:
+        url = f"https://api.openweathermap.org/data/2.5/weather?q={lugar}&appid=9fff9f0d02f0876e9b331bb4433f2d07&units=metric"
+        response = requests.get(url).json()
+
+        temperatura = response["main"]["temp"]
+
+        # lógica simple de clima
+        if "rain" in response:
+            clima = 3
+        else:
+            clima = 1
+
+    except:
+        # fallback si falla API
+        clima = 1
+
+    # 🤖 usar tu modelo existente
+    return predict_rf(clima, hora, zona)
 
 
 def cross_validate_rf(k=5, n_estimators=100, random_state=42, max_depth=None):

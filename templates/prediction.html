@@ -1,126 +1,61 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bike Parking Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
 
-{% block title %}Prediction System{% endblock %}
+    <div class="container">
+        <h1>🚲 Bike Parking Occupancy Prediction</h1>
 
-{% block content %}
-<section class="section">
-    <div class="section-inner">
-        <div class="section-header">
-            <div class="section-number">05</div>
-            <div>
-                <h2>Prediction System</h2>
-                <p>Use the selected best model from Activity 2 to make a new occupancy prediction for Bogotá.</p>
+        <p>
+            This system predicts the occupancy of bike parking spaces based on 
+            real-time weather conditions and time automatically.
+        </p>
+
+        <hr>
+
+        <h3>🚀 Automatic Prediction</h3>
+
+        <form method="POST" action="/prediction" class="input-group">
+
+            <label for="lugar">📍 Location</label>
+            <input type="text" name="lugar" id="lugar" placeholder="Ej: Bogota" required>
+            <small class="input-hint">Enter the location (example: Bogota).</small>
+
+            <br><br>
+
+            <label for="zona">🗺️ Zone</label>
+            <select name="zona" id="zona" required>
+                <option value="1">North</option>
+                <option value="2">Center</option>
+                <option value="3">South</option>
+                <option value="4">Other</option>
+            </select>
+            <small class="input-hint">Select the zone of the city.</small>
+
+            <br><br>
+
+            <button type="submit" class="btn btn-primary">
+                🔥 Predict Occupancy
+            </button>
+            <p>DEBUG resultado: {{ resultado }}</p>
+            <p>DEBUG error: {{ error }}</p>
+
+        </form>
+
+        <hr>
+
+        {% if pred %}
+            <div class="result-box">
+                <h3>📊 Prediction Result</h3>
+                <p><strong>{{ pred }}</strong> bicycles (estimated occupancy)</p>
             </div>
-        </div>
-
-        <div class="card prediction-summary-card">
-            <h3>Selected Model Information</h3>
-            <p>The best model is selected using the Activity 2 evaluation results and cross-validation metrics.</p>
-            <div class="metrics-grid">
-                <div class="metric-box">
-                    <div class="value">{{ best_model.name }}</div>
-                    <div class="label">Selected model</div>
-                </div>
-                <div class="metric-box">
-                    <div class="value">{{ best_model.metrics.r2_mean | default('N/A') }}</div>
-                    <div class="label">R² mean</div>
-                </div>
-                <div class="metric-box">
-                    <div class="value">{{ best_model.metrics.rmse_mean | default('N/A') }}</div>
-                    <div class="label">RMSE mean</div>
-                </div>
-                <div class="metric-box">
-                    <div class="value">{{ best_model.metrics.mae_mean | default('N/A') }}</div>
-                    <div class="label">MAE mean</div>
-                </div>
-                <div class="metric-box">
-                    <div class="value">{{ best_model.metrics.mape_mean | default('N/A') }}%</div>
-                    <div class="label">MAPE mean</div>
-                </div>
-            </div>
-            <p class="note">{{ best_model.reason }}</p>
-        </div>
-
-        <div class="card reliability-card">
-            <h3>Prediction Reliability</h3>
-            <p>The prediction is a regression estimate. Expected uncertainty is described by the model's RMSE.</p>
-            <div class="metrics-grid">
-                <div class="metric-box">
-                    <div class="value">{{ best_model.metrics.rmse_mean | default('N/A') }}</div>
-                    <div class="label">Validation RMSE</div>
-                </div>
-                <div class="metric-box">
-                    <div class="value">{{ best_model.metrics.mape_mean | default('N/A') }}%</div>
-                    <div class="label">Validation MAPE</div>
-                </div>
-            </div>
-            <p class="note">The prediction may vary approximately ±{{ best_model.metrics.rmse_mean | default('N/A') }} units according to validation results.</p>
-            <p>The numerical estimate should be used as a guidance value rather than an exact count.</p>
-        </div>
-
-        <div class="card">
-            <h3>Manual Prediction Input</h3>
-            {% if error %}
-            <div class="error-box">
-                <p>{{ error }}</p>
-            </div>
-            {% endif %}
-            <form method="POST" action="/prediction" class="input-group">
-                <label for="clima">Weather situation (1 = Clear, 2 = Mist, 3 = Light rain, 4 = Heavy rain)</label>
-                <input type="number" name="clima" id="clima" min="1" max="4" step="1" required value="{{ input_values.clima }}">
-                <small class="input-hint">Select the current Bogotá weather category used in the dataset.</small>
-
-                <label for="hora">Hour of day (0-23)</label>
-                <input type="number" name="hora" id="hora" min="0" max="23" step="1" required value="{{ input_values.hora }}">
-                <small class="input-hint">Enter the hour in Bogotá local time.</small>
-
-                <label for="zona">Climatic period (1 = Dry period, 2 = Moderate rainfall period, 3 = High rainfall period, 4 = Variable weather period)</label>
-                <input type="number" name="zona" id="zona" min="1" max="4" step="1" required value="{{ input_values.zona }}">
-                <small class="input-hint">Use Bogotá-specific climate period labels.</small>
-
-                <button type="submit" class="btn btn-primary">Predict occupancy</button>
-            </form>
-        </div>
-
-        {% if resultado is not none %}
-        <div class="card prediction-result-card">
-            <h3>Prediction Result</h3>
-            <p class="prediction-value">{{ resultado }}</p>
-            <p>The estimate above is generated by the selected model and reflects the expected occupancy value for the entered conditions.</p>
-            {% if reliability %}
-            <div class="metrics-grid" style="margin-top:1rem;">
-                <div class="metric-box">
-                    <div class="value">{{ reliability.mae }}</div>
-                    <div class="label">Expected MAE</div>
-                </div>
-                <div class="metric-box">
-                    <div class="value">{{ reliability.rmse }}</div>
-                    <div class="label">Expected RMSE</div>
-                </div>
-                <div class="metric-box">
-                    <div class="value">{{ reliability.mape }}%</div>
-                    <div class="label">Expected MAPE</div>
-                </div>
-                <div class="metric-box">
-                    <div class="value">{{ reliability.r2 }}</div>
-                    <div class="label">Cross-validated R²</div>
-                </div>
-            </div>
-            <p class="note">These values describe the model's average validation performance and form the basis for prediction reliability.</p>
-            {% endif %}
-        </div>
         {% endif %}
 
-        <div class="cta-section">
-            <div class="cta-text">
-                <h3>Related steps</h3>
-                <p>Review model preparation and evaluation to understand how predictions are produced.</p>
-            </div>
-            <div class="cta-nav">
-                <a href="/modelo" class="btn btn-outline">Model Engineering</a>
-                <a href="/evaluacion" class="btn btn-primary">Model Evaluation</a>
-            </div>
-        </div>
     </div>
-</section>
-{% endblock %}
+
+</body>
+</html>
