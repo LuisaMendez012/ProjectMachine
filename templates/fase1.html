@@ -1,152 +1,317 @@
 {% extends 'base.html' %}
 
-{% block title %}Phase 1 — Business Understanding{% endblock %}
+{% block title %}Predict Bicycle Parking Occupancy in Bogotá{% endblock %}
 
 {% block content %}
 
-<section class="section">
-    <div class="section-inner">
-        <div class="phase-label">ML Project · Bogota</div>
-        <h1>Business Understanding<br><span>and Data Insight</span></h1>
-        <p class="header-sub">Occupancy analysis for bike parking using predictive machine learning models.</p>
-    </div>
-</section>
+<!-- HERO SECTION -->
+<section class="hero home-hero">
+    <div class="home-hero-grid">
+        <div class="home-hero-copy">
+            <div class="eyebrow">Smart Mobility • Bogotá, Colombia</div>
+            <h1>Predict Bicycle Parking Occupancy in Bogotá</h1>
+            <p class="subtitle">
+                An intelligent mobility platform powered by Machine Learning to estimate bicycle parking demand in real time.
+            </p>
+            <div class="hero-cta">
+                <a href="/prediction" class="btn btn-accent btn-lg">Start Prediction</a>
+                <a href="#methodology" class="btn btn-outline btn-lg">Learn More</a>
+            </div>
+            <div class="hero-kpis">
+                <div class="hero-kpi">
+                    <div class="hero-kpi-value">Real-time</div>
+                    <div class="hero-kpi-label">Occupancy estimates</div>
+                </div>
+                <div class="hero-kpi">
+                    <div class="hero-kpi-value">Weather-aware</div>
+                    <div class="hero-kpi-label">Demand signals</div>
+                </div>
+                <div class="hero-kpi">
+                    <div class="hero-kpi-value">ML-driven</div>
+                    <div class="hero-kpi-label">Cross-validated</div>
+                </div>
+            </div>
+        </div>
 
-<nav class="progress-nav">
-    <div class="progress-step active">
-        <div class="dot">1</div>
-        <span>Understanding</span>
-    </div>
-    <div class="progress-line"></div>
-    <div class="progress-step">
-        <div class="dot">2</div>
-        <span>Model</span>
-    </div>
-    <div class="progress-line"></div>
-    <div class="progress-step">
-        <div class="dot">3</div>
-        <span>Evaluation</span>
-    </div>
-    <div class="progress-line"></div>
-    <div class="progress-step">
-        <div class="dot">4</div>
-        <span>Deployment</span>
-    </div>
-</nav>
+        <div class="home-hero-visual" aria-hidden="true">
+            <div class="visual-card">
+                <div class="visual-header">
+                    <span class="dot dot-blue"></span>
+                    <span class="dot dot-yellow"></span>
+                    <span class="dot dot-green"></span>
+                    <span class="visual-title">Parking Demand Dashboard</span>
+                </div>
+                <div class="visual-body">
+                    <div class="visual-chart">
+                        <svg viewBox="0 0 420 200" class="chart-svg" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0" stop-color="#2E7D32" stop-opacity="0.9"/>
+                                    <stop offset="1" stop-color="#1E3A5F" stop-opacity="0.9"/>
+                                </linearGradient>
+                            </defs>
+                            <rect x="0" y="0" width="420" height="200" fill="rgba(255,255,255,0.02)"/>
+                            <g opacity="0.35" stroke="#FFFFFF" stroke-width="1">
+                                <line x1="40" y1="170" x2="380" y2="170"/>
+                                <line x1="40" y1="130" x2="380" y2="130"/>
+                                <line x1="40" y1="90" x2="380" y2="90"/>
+                                <line x1="40" y1="50" x2="380" y2="50"/>
+                            </g>
+                            <path d="M40 150 C 85 120, 120 140, 160 110 S 255 60, 300 95 S 360 140, 380 120" fill="none" stroke="url(#g)" stroke-width="5" stroke-linecap="round"/>
+                            <path d="M40 150 C 85 120, 120 140, 160 110 S 255 60, 300 95 S 360 140, 380 120" fill="none" stroke="#4CAF50" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+                            <circle cx="160" cy="110" r="7" fill="#F4C542"/>
+                            <circle cx="300" cy="95" r="7" fill="#4CAF50"/>
+                        </svg>
+                    </div>
+                    <div class="visual-metrics">
+                        <div class="visual-metric">
+                            <div class="visual-metric-value">{{ '—' }}</div>
+                            <div class="visual-metric-label">Estimated occupancy</div>
+                        </div>
+                        <div class="visual-metric">
+                            <div class="visual-metric-value">R²-ready</div>
+                            <div class="visual-metric-label">Model performance</div>
+                        </div>
+                        <div class="visual-metric">
+                            <div class="visual-metric-value">Weather</div>
+                            <div class="visual-metric-label">Demand signals</div>
+                        </div>
+                    </div>
+                    <div class="visual-footer">
+                        <span class="chip">Start Prediction →</span>
+                        <span class="chip chip-soft">Instant result</span>
+                    </div>
+                </div>
+            </div>
 
-<section class="section">
-    <div class="section-inner">
-        <div class="section-header">
-            <div class="section-number">01</div>
-            <h2>Project Objective</h2>
-        </div>
-        <p>Build a machine learning model to predict the occupancy level of public bike parking in Bogota using open mobility and weather data.</p>
-        <p>The goal is to optimize infrastructure use and support better decision-making for both citizens and public agencies.</p>
-    </div>
-</section>
-
-<section class="section">
-    <div class="section-inner">
-        <div class="section-header">
-            <div class="section-number">02</div>
-            <h2>Problem Context</h2>
-        </div>
-        <p>Bogota has experienced a strong increase in bicycle use, which raises demand for parking spaces. Occupancy changes by time, location, and weather conditions.</p>
-        <p>Understanding these patterns helps improve urban planning and service delivery.</p>
-    </div>
-</section>
-
-<section class="section">
-    <div class="section-inner">
-        <div class="section-header">
-            <div class="section-number">03</div>
-            <h2>Business Questions</h2>
-        </div>
-        <div class="question-list">
-            <div class="question-item">Which hours have the highest occupancy?</div>
-            <div class="question-item">How does weather affect bike parking use?</div>
-            <div class="question-item">Which zones have the highest demand?</div>
-            <div class="question-item">Can future occupancy be predicted?</div>
-        </div>
-    </div>
-</section>
-
-<section class="section">
-    <div class="section-inner">
-        <div class="section-header">
-            <div class="section-number">04</div>
-            <h2>Data Sources</h2>
-        </div>
-        <p>The project uses multiple data sources to build a robust model:</p>
-        <div class="card-grid">
-            <div class="card-item">Bike parking occupancy records</div>
-            <div class="card-item">Geographic location</div>
-            <div class="card-item">Date and time</div>
-            <div class="card-item">Temperature</div>
-            <div class="card-item">Precipitation</div>
-            <div class="card-item">Relative humidity</div>
-        </div>
-    </div>
-</section>
-
-<section class="section">
-    <div class="section-inner">
-        <div class="section-header">
-            <div class="section-number">05</div>
-            <h2>Data Understanding</h2>
-        </div>
-        <p>An initial assessment verifies the quality and reliability of the information as part of data understanding:</p>
-        <div class="card-grid">
-            <div class="card-item">Overall quality</div>
-            <div class="card-item">Missing values</div>
-            <div class="card-item">Duplicate records</div>
-            <div class="card-item">Consistency</div>
+            <div class="bg-road" aria-hidden="true">
+                <div class="road-line"></div>
+                <div class="road-line road-line-2"></div>
+            </div>
         </div>
     </div>
 </section>
 
-<section class="section">
-    <div class="section-inner">
-        <div class="section-header">
-            <div class="section-number">06</div>
-            <h2>Project Viability</h2>
+<!-- WHY THIS MATTERS -->
+<section id="why-matters">
+    <div class="section-head">
+        <h2>Why This Matters</h2>
+        <p class="text-muted">Turning mobility data into actionable decisions for Bogotá.</p>
+    </div>
+
+    <div class="why-grid">
+        <div class="why-card">
+            <h3>Bicycle Mobility Growth</h3>
+            <p>Demand for cycling infrastructure keeps increasing—occupancy prediction helps cities plan smarter.</p>
         </div>
-        <p>The project is viable thanks to available open data and technology, though there are some limitations to consider:</p>
-        <div class="warn-list">
-            <div class="warn-item">Incomplete data in some periods</div>
-            <div class="warn-item">Possible bias in data collection</div>
-            <div class="warn-item">User behavior can change after major events</div>
+        <div class="why-card">
+            <h3>Weather-Based Demand</h3>
+            <p>Rain and temperature influence ridership and parking behavior, improving the reliability of forecasts.</p>
+        </div>
+        <div class="why-card">
+            <h3>Smart Urban Planning</h3>
+            <p>Forecasts support resource allocation, zone optimization, and data-driven mobility strategies.</p>
         </div>
     </div>
 </section>
 
-<section class="section">
-    <div class="section-inner">
-        <div class="section-header">
-            <div class="section-number">07</div>
-            <h2>Project Importance</h2>
+<!-- PREDICTION PREVIEW -->
+<section id="preview">
+    <div class="preview-grid">
+        <div class="preview-copy">
+            <div class="eyebrow eyebrow-dark">Prediction System</div>
+            <h2>See the platform estimate occupancy</h2>
+            <p class="text-muted">
+                This platform predicts bicycle parking occupancy using historical patterns and weather-aware signals.
+            </p>
+            <div class="preview-actions">
+                <p class="text-muted" style="margin: 0; padding: 0.35rem 0;">
+                    Explore the Prediction System using the main CTA above.
+                </p>
+                <a href="/evaluacion" class="btn btn-light">View Evaluation</a>
+            </div>
         </div>
-        <p>This project applies data analysis and machine learning to solve mobility challenges and contribute to a more efficient and sustainable Bogota.</p>
+
+        <div class="preview-card">
+            <div class="preview-card-title">What you get</div>
+            <ul class="preview-list">
+                <li><span class="check"></span>Estimated occupancy value for your zone</li>
+                <li><span class="check"></span>Occupancy status (low / moderate / high)</li>
+                <li><span class="check"></span>Short recommendation to support decisions</li>
+            </ul>
+        <div class="preview-card-cta">
+                <p class="text-muted" style="margin: 0; padding: 0.35rem 0;">
+                    Use the hero CTA to start your prediction.
+                </p>
+        </div>
+        </div>
     </div>
 </section>
 
-<section class="section">
-    <div class="section-inner">
-        <div class="section-header">
-            <div class="section-number">08</div>
-            <h2>Reinforcement Learning Module</h2>
+<!-- QUICK ACCESS SECTION (ACADEMIC REQUIRED SECTIONS) -->
+<section id="quick-access">
+    <div class="section-head">
+        <h2>Platform Overview</h2>
+        <p class="text-muted">Jump to the sections required for the full CRISP-ML workflow.</p>
+    </div>
+
+    <div class="quick-grid">
+        <div class="quick-card">
+            <div class="quick-icon" aria-hidden="true">⌁</div>
+            <h3>Prediction System</h3>
+            <p>Instant occupancy forecasts for specific locations and zones.</p>
+            <p class="text-muted" style="margin: 0; padding-top: 0.35rem;">
+                Use the main hero button to start.
+            </p>
         </div>
-        <p>Explore a module that demonstrates how an intelligent agent can learn from feedback and improve over time.</p>
-        <a href="/rl" class="btn btn-outline">Explore Reinforcement Learning</a>
+        <div class="quick-card">
+            <div class="quick-icon" aria-hidden="true">⟡</div>
+            <h3>Methodology</h3>
+            <p>CRISP-ML process overview and data science phases.</p>
+            <a class="btn btn-primary" href="/modelo">View Process</a>
+        </div>
+        <div class="quick-card">
+            <div class="quick-icon" aria-hidden="true">▦</div>
+            <h3>Model Evaluation</h3>
+            <p>Metrics, comparison, and cross-validated results.</p>
+            <a class="btn btn-primary" href="/evaluacion">View Results</a>
+        </div>
     </div>
 </section>
 
-<div class="cta-section">
-    <div class="cta-text">
-        <h3>Continue to the next step</h3>
-        <p>Model building and training overview</p>
+<!-- ABOUT (SHORT, LESS OVERLOAD) -->
+<section id="about">
+    <div class="about-grid">
+        <div class="about-card">
+            <h2>About the Project</h2>
+            <p>
+                This Smart City platform uses Machine Learning to estimate bicycle parking occupancy across zones in Bogotá.
+                Temporal patterns, weather conditions, and location signals are combined to produce actionable forecasts.
+            </p>
+            <div class="about-pills">
+                <span class="pill">CRISP-ML methodology</span>
+                <span class="pill">Cross-validation</span>
+                <span class="pill">Flask deployment</span>
+            </div>
+        </div>
+
+        <div class="about-card about-stats">
+            <div class="stat">
+                <div class="stat-label">Models</div>
+                <div class="stat-value">Linear, Random Forest, K-Means</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Signals</div>
+                <div class="stat-value">Weather + time + zone</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Deployment</div>
+                <div class="stat-value">Flask Web Application</div>
+            </div>
+        </div>
     </div>
-    <a href="/modelo" class="btn btn-primary">Phase 2 — Model</a>
-</div>
+</section>
+
+<!-- METHODOLOGY (TIMELINE + COLLAPSIBLE) -->
+<section id="methodology">
+    <div class="section-head">
+        <h2>CRISP-ML Methodology (Designed for Clarity)</h2>
+        <p class="text-muted">No long paragraphs—just a structured timeline you can scan.</p>
+    </div>
+
+    <div class="timeline">
+        <div class="timeline-item">
+            <div class="timeline-bullet">1</div>
+            <div class="timeline-content">
+                <div class="timeline-title">Business Understanding</div>
+                <p class="text-muted">Define the goal: estimate bicycle parking occupancy for better mobility decisions.</p>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-bullet">2</div>
+            <div class="timeline-content">
+                <div class="timeline-title">Data Understanding</div>
+                <p class="text-muted">Identify patterns across time, zone, and weather conditions.</p>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-bullet">3</div>
+            <div class="timeline-content">
+                <div class="timeline-title">Data Engineering</div>
+                <p class="text-muted">Clean and transform signals to support stable training and evaluation.</p>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-bullet">4</div>
+            <div class="timeline-content">
+                <div class="timeline-title">Model Engineering</div>
+                <p class="text-muted">Train and compare models to find strong generalization on unseen data.</p>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-bullet">5</div>
+            <div class="timeline-content">
+                <div class="timeline-title">Model Evaluation</div>
+                <p class="text-muted">Quantify error with metrics and cross-validation.</p>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-bullet">6</div>
+            <div class="timeline-content">
+                <div class="timeline-title">Deployment</div>
+                <p class="text-muted">Expose the predictive system through the Flask interface.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion" role="region" aria-label="CRISP-ML details">
+        <button class="accordion-btn" type="button" aria-expanded="false" data-acc="1">Business Understanding</button>
+        <div class="accordion-panel" hidden>
+            <p class="text-muted">We frame the problem as a regression task to estimate occupancy and support planning choices across Bogotá zones.</p>
+        </div>
+
+        <button class="accordion-btn" type="button" aria-expanded="false" data-acc="2">Data Engineering</button>
+        <div class="accordion-panel" hidden>
+            <p class="text-muted">We prepare the dataset to ensure consistent inputs for training, reducing noise and improving reliability.</p>
+        </div>
+
+        <button class="accordion-btn" type="button" aria-expanded="false" data-acc="3">Model Engineering</button>
+        <div class="accordion-panel" hidden>
+            <p class="text-muted">We evaluate multiple machine learning approaches and select the best performing model based on evaluation results.</p>
+        </div>
+
+        <button class="accordion-btn" type="button" aria-expanded="false" data-acc="4">Evaluation & Deployment</button>
+        <div class="accordion-panel" hidden>
+            <p class="text-muted">Performance metrics and cross-validation confirm generalization, and the system is deployed using Flask.</p>
+        </div>
+    </div>
+
+    <div class="methodology-cta">
+        <a class="btn btn-primary" href="/modelo">Open Full Methodology</a>
+        <a class="btn btn-light" href="/evaluacion">Open Evaluation Dashboard</a>
+    </div>
+</section>
+
+<script>
+    (function () {
+        const accBtns = document.querySelectorAll('.accordion-btn');
+        accBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const panel = btn.nextElementSibling;
+                const isOpen = btn.getAttribute('aria-expanded') === 'true';
+
+                accBtns.forEach(b => {
+                    b.setAttribute('aria-expanded', 'false');
+                    const p = b.nextElementSibling;
+                    if (p) p.hidden = true;
+                });
+
+                btn.setAttribute('aria-expanded', String(!isOpen));
+                if (panel) panel.hidden = isOpen;
+            });
+        });
+    })();
+</script>
 
 {% endblock %}
+

@@ -1,7 +1,16 @@
 from flask import Flask, render_template, request, redirect
 from model import predecir_ocupacion, crear_datos_evaluacion, calcular_validacion_cruzada
 from model_rl import train_q_learning, get_q_table
-from model_rf import train_random_forest, predict_rf, cross_validate_rf, plot_feature_importances, plot_prediction_vs_actual, plot_model_comparison, plot_metrics_summary, predict_auto
+from model_rf import (
+    train_random_forest,
+    predict_rf,
+    cross_validate_rf,
+    plot_feature_importances,
+    plot_prediction_vs_actual,
+    plot_model_comparison,
+    plot_metrics_summary,
+    predict_auto,
+)
 from model_kmeans import run_kmeans, plot_cluster_counts
 import os
 import math
@@ -10,7 +19,7 @@ import statistics
 app = Flask(__name__)
 
 # ==============================
-# MÉTRICAS
+# METRICS
 # ==============================
 def calcular_metricas(dataset):
     reales = [item['real'] for item in dataset]
@@ -33,6 +42,7 @@ def calcular_metricas(dataset):
         'r2_pct': int(round(r2 * 100)),
     }
 
+
 def seleccionar_mejor_model(cv_linear, rf_cv):
     best = {
         'name': 'Linear Regression',
@@ -48,6 +58,7 @@ def seleccionar_mejor_model(cv_linear, rf_cv):
             }
     return best
 
+
 # ==============================
 # HOME
 # ==============================
@@ -55,8 +66,17 @@ def seleccionar_mejor_model(cv_linear, rf_cv):
 def fase1():
     return render_template('fase1.html', active_page='home')
 
+
 # ==============================
-# FASE 2 (MODIFICADA 🔥)
+# ABOUT
+# ==============================
+@app.route('/about')
+def about():
+    return render_template('about.html', active_page='about')
+
+
+# ==============================
+# PHASE 2 (UPDATED 🔥)
 # ==============================
 @app.route('/modelo', methods=['GET', 'POST'])
 def fase2():
@@ -64,18 +84,18 @@ def fase2():
 
     if request.method == 'POST':
         try:
-            lugar = request.form.get("lugar")
-            zona = request.form.get("zona")
+            lugar = request.form.get('lugar')
+            zona = request.form.get('zona')
 
-            print("DEBUG FASE2:", lugar, zona)
+            print('DEBUG FASE2:', lugar, zona)
 
             if lugar and zona:
                 resultado = predict_auto(lugar, float(zona))
-
         except Exception as e:
-            print("ERROR FASE2:", str(e))
+            print('ERROR FASE2:', str(e))
 
     return render_template('fase2.html', resultado=resultado, active_page='model')
+
 
 # ==============================
 # FASE 3
@@ -103,11 +123,12 @@ def fase3():
         cv=cv,
         rf_cv=rf_cv,
         best_model=best_model,
-        active_page='evaluation'
+        active_page='evaluation',
     )
 
+
 # ==============================
-# 🔥 PREDICTION (CORREGIDA)
+# 🔥 PREDICTION (FIXED)
 # ==============================
 @app.route('/prediction', methods=['GET', 'POST'])
 def prediction():
@@ -116,23 +137,22 @@ def prediction():
 
     if request.method == 'POST':
         try:
-            lugar = request.form.get("lugar")
-            zona = request.form.get("zona")
+            lugar = request.form.get('lugar')
+            zona = request.form.get('zona')
 
-            print("🧪 DEBUG INPUT:", lugar, zona)
+            print('DEBUG INPUT:', lugar, zona)
 
             if not lugar or not zona:
-                error = "Faltan datos"
+                error = 'Missing data'
             else:
                 resultado = predict_auto(lugar, float(zona))
-
-                print("🧪 RESULTADO:", resultado)
-
+                print('RESULT:', resultado)
         except Exception as e:
             error = str(e)
-            print("❌ ERROR:", error)
+            print('ERROR:', error)
 
     return render_template('prediction.html', resultado=resultado, error=error)
+
 
 # ==============================
 # RF TRAIN
@@ -140,7 +160,8 @@ def prediction():
 @app.route('/rf/train')
 def rf_train():
     train_random_forest()
-    return "RF listo"
+    return 'RF ready'
+
 
 # ==============================
 # RL
@@ -149,19 +170,23 @@ def rf_train():
 def rl_menu():
     return render_template('rl.html')
 
+
 @app.route('/rl/train')
 def rl_train():
     train_q_learning()
-    return "Entrenado"
+    return 'Trained'
+
 
 @app.route('/rl/results')
 def rl_results():
     q = get_q_table()
     return render_template('rl_results.html', q=q)
 
+
 # ==============================
 # RUN
 # ==============================
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 10000))
+    port = int(os.environ.get('PORT', 10000))
     app.run(host='0.0.0.0', port=port)
+
