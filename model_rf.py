@@ -15,6 +15,7 @@ from datetime import datetime
 
 
 
+
 def _build_matrix(rows):
     X = np.vstack([_build_feature_vector(row) for row in rows])
     y = np.array([float(row['cnt']) for row in rows], dtype=float)
@@ -28,6 +29,10 @@ def train_random_forest(n_estimators=100, random_state=42, max_depth=None):
     rf = RandomForestRegressor(n_estimators=n_estimators, random_state=random_state, max_depth=max_depth)
     rf.fit(X, y)
     return rf
+
+print("🔥 Entrenando modelo una sola vez...")
+modelo_global = train_random_forest(n_estimators=20)
+print("✅ Modelo listo")
 
 
 def predict_rf(clima, hora, zona):

@@ -17,9 +17,7 @@ import math
 import statistics
 import unicodedata
 
-print("Entrenando modelo...")
-modelo_global = train_random_forest()
-print("Modelo listo")
+
 
 def limpiar_ciudad(texto):
     texto = texto.strip().lower()
