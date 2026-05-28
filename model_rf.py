@@ -13,6 +13,8 @@ from model import get_feature_means
 import requests
 from datetime import datetime
 
+
+
 def _build_matrix(rows):
     X = np.vstack([_build_feature_vector(row) for row in rows])
     y = np.array([float(row['cnt']) for row in rows], dtype=float)
@@ -28,12 +30,15 @@ def train_random_forest(n_estimators=100, random_state=42, max_depth=None):
     return rf
 
 
-def predict_rf(clima, hora, zona, model=None):
+def predict_rf(clima, hora, zona):
+    global modelo_global
+
     clima = float(clima)
     hora = float(hora)
     zona = float(zona)
-    # Build feature vector consistent with linear model
+
     means = get_feature_means()
+
     feature_vector = np.array([
         hora,
         zona,
@@ -48,10 +53,7 @@ def predict_rf(clima, hora, zona, model=None):
         means['windspeed'],
     ], dtype=float)
 
-    if model is None:
-        model = train_random_forest()
-
-    pred = model.predict(feature_vector.reshape(1, -1))[0]
+    pred = modelo_global.predict(feature_vector.reshape(1, -1))[0]
     return float(round(float(pred), 2))
 
 
