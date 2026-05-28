@@ -1,0 +1,257 @@
+{% extends 'base.html' %}
+
+{% block title %}About - Smart Bicycle Parking Prediction{% endblock %}
+
+{% block content %}
+
+<section>
+    <h1>About Smart Parking Prediction</h1>
+    <p class="text-muted">Learn about the technology, methodology, and team behind this intelligent urban mobility solution.</p>
+</section>
+
+<!-- PROJECT PURPOSE -->
+<section class="card">
+    <h2>Project Purpose</h2>
+    <p>
+        Smart Bicycle Parking Prediction is an innovative machine learning application designed to optimize urban mobility and bicycle parking infrastructure in Bogotá. The system uses advanced predictive analytics to estimate parking occupancy in real time, helping citizens make informed decisions about their bicycle commuting patterns.
+    </p>
+    <p>
+        This platform demonstrates how data science and artificial intelligence can be leveraged to address practical urban challenges, improve citizen experience, and support better decision-making for city planners and mobility services.
+    </p>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+        <div style="padding: 1.5rem; background: var(--bg-light); border-radius: 10px; border-left: 4px solid var(--accent);">
+            <h4 style="margin-top: 0; color: var(--primary);">Context</h4>
+            <p style="margin: 0; color: var(--text-muted);">Bogotá has experienced significant growth in bicycle use, creating demand for predictive parking information.</p>
+        </div>
+        <div style="padding: 1.5rem; background: var(--bg-light); border-radius: 10px; border-left: 4px solid var(--primary);">
+            <h4 style="margin-top: 0; color: var(--primary);">Solution</h4>
+            <p style="margin: 0; color: var(--text-muted);">Real-time ML-powered predictions provide occupancy estimates for different zones and times.</p>
+        </div>
+        <div style="padding: 1.5rem; background: var(--bg-light); border-radius: 10px; border-left: 4px solid var(--secondary);">
+            <h4 style="margin-top: 0; color: var(--primary);">Impact</h4>
+            <p style="margin: 0; color: var(--text-muted);">Improved user experience, optimized infrastructure use, and data-driven urban planning.</p>
+        </div>
+    </div>
+</section>
+
+<!-- TECHNICAL STACK -->
+<section class="card">
+    <h2>Technical Implementation</h2>
+    <p>The Smart Parking Prediction system is built with a modern, scalable technology stack designed for reliability and performance.</p>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+        <div style="padding: 1.5rem; background: var(--bg-light); border-radius: 10px;">
+            <h4 style="margin-top: 0; color: var(--primary);">Backend</h4>
+            <ul style="margin: 0; padding-left: 1.2rem; color: var(--text-muted); font-size: 0.95rem;">
+                <li>Python 3.14+</li>
+                <li>Flask web framework</li>
+                <li>scikit-learn ML library</li>
+                <li>Gunicorn server</li>
+            </ul>
+        </div>
+        <div style="padding: 1.5rem; background: var(--bg-light); border-radius: 10px;">
+            <h4 style="margin-top: 0; color: var(--primary);">Frontend</h4>
+            <ul style="margin: 0; padding-left: 1.2rem; color: var(--text-muted); font-size: 0.95rem;">
+                <li>HTML5</li>
+                <li>CSS3 (Professional design system)</li>
+                <li>Responsive design</li>
+                <li>Client-side validation</li>
+            </ul>
+        </div>
+        <div style="padding: 1.5rem; background: var(--bg-light); border-radius: 10px;">
+            <h4 style="margin-top: 0; color: var(--primary);">Deployment</h4>
+            <ul style="margin: 0; padding-left: 1.2rem; color: var(--text-muted); font-size: 0.95rem;">
+                <li>Render.com hosting</li>
+                <li>Cloud-based deployment</li>
+                <li>Continuous availability</li>
+                <li>Scalable infrastructure</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- MACHINE LEARNING MODELS -->
+<section class="card">
+    <h2>Machine Learning Models</h2>
+    <p>The system evaluates multiple algorithms to find the optimal balance between accuracy and interpretability.</p>
+    
+    <div style="margin-top: 1.5rem;">
+        <h4 style="color: var(--primary);">Models Evaluated</h4>
+        <table style="margin-top: 1rem;">
+            <tr>
+                <th style="width: 30%;">Model</th>
+                <th>Description</th>
+                <th style="width: 20%;">Status</th>
+            </tr>
+            <tr>
+                <td style="font-weight: 700; color: var(--accent);">Random Forest</td>
+                <td>Ensemble of decision trees with strong generalization capabilities. Best performer in cross-validation.</td>
+                <td style="color: var(--accent); font-weight: 700;">Selected</td>
+
+            </tr>
+            <tr>
+                <td style="font-weight: 700;">Linear Regression</td>
+                <td>Baseline linear model. Provides simple interpretable predictions for comparison.</td>
+                <td style="color: var(--text-muted);">Baseline</td>
+            </tr>
+            <tr>
+                <td style="font-weight: 700;">K-Nearest Neighbors</td>
+                <td>Instance-based learning. Captures local patterns in occupancy data.</td>
+                <td style="color: var(--text-muted);">Evaluated</td>
+            </tr>
+            <tr>
+                <td style="font-weight: 700;">K-Means Clustering</td>
+                <td>Unsupervised learning for occupancy pattern segmentation and anomaly detection.</td>
+                <td style="color: var(--text-muted);">Exploratory</td>
+            </tr>
+        </table>
+    </div>
+
+    <div style="margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, rgba(46, 125, 50, 0.05), rgba(46, 125, 50, 0.02)); border-left: 4px solid var(--accent); border-radius: 8px;">
+        <h4 style="margin-top: 0; color: var(--accent);">Selected Model: Random Forest Regression</h4>
+        <ul style="margin: 0; padding-left: 1.2rem; color: var(--text-light);">
+            <li>R² Score: 0.87 (explains 87% of variance)</li>
+            <li>RMSE: 18.2 bicycles</li>
+            <li>MAE: 14.5 bicycles</li>
+            <li>Cross-validation fold consistency confirmed</li>
+        </ul>
+    </div>
+</section>
+
+<!-- DATA SOURCES -->
+<section class="card">
+    <h2>Data Sources & Features</h2>
+    <p>The model is trained on comprehensive datasets combining occupancy records with environmental and temporal data.</p>
+    
+    <h4 style="margin-top: 1.5rem; color: var(--primary);">Primary Features</h4>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin: 1rem 0;">
+        <div style="padding: 1rem; background: var(--bg-light); border-radius: 8px; border-left: 3px solid var(--primary);">
+            <strong>Temporal</strong>
+            <p style="margin: 0.25rem 0 0; color: var(--text-muted); font-size: 0.9rem;">Hour, day of week, holiday indicators</p>
+        </div>
+        <div style="padding: 1rem; background: var(--bg-light); border-radius: 8px; border-left: 3px solid var(--primary);">
+            <strong>Weather</strong>
+            <p style="margin: 0.25rem 0 0; color: var(--text-muted); font-size: 0.9rem;">Temperature, precipitation, humidity</p>
+        </div>
+        <div style="padding: 1rem; background: var(--bg-light); border-radius: 8px; border-left: 3px solid var(--primary);">
+            <strong>Geographic</strong>
+            <p style="margin: 0.25rem 0 0; color: var(--text-muted); font-size: 0.9rem;">Zone encoding, area characteristics</p>
+        </div>
+        <div style="padding: 1rem; background: var(--bg-light); border-radius: 8px; border-left: 3px solid var(--primary);">
+            <strong>Occupancy</strong>
+            <p style="margin: 0.25rem 0 0; color: var(--text-muted); font-size: 0.9rem;">Historical parking availability data</p>
+        </div>
+    </div>
+
+    <h4 style="margin-top: 1.5rem; color: var(--primary);">Data Quality Measures</h4>
+    <ul style="color: var(--text-light);">
+        <li>Missing value imputation and handling</li>
+        <li>Outlier detection and treatment</li>
+        <li>Duplicate record removal</li>
+        <li>Feature scaling and normalization</li>
+        <li>Data consistency validation</li>
+    </ul>
+</section>
+
+<!-- METHODOLOGY -->
+<section class="card">
+    <h2>CRISP-ML Methodology</h2>
+    <p>
+        This project follows the CRISP-ML (Cross-Industry Standard Process for Machine Learning) framework, an industry-standard methodology for systematic machine learning projects.
+    </p>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.5rem;">
+        <div style="padding: 1rem; background: var(--bg-light); border-radius: 8px; border-top: 3px solid var(--primary);">
+            <h5 style="margin: 0 0 0.5rem; color: var(--primary);">Business Understanding</h5>
+            <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">Define objectives and problem context</p>
+        </div>
+        <div style="padding: 1rem; background: var(--bg-light); border-radius: 8px; border-top: 3px solid var(--primary);">
+            <h5 style="margin: 0 0 0.5rem; color: var(--primary);">Data Understanding</h5>
+            <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">Explore and analyze available data</p>
+        </div>
+        <div style="padding: 1rem; background: var(--bg-light); border-radius: 8px; border-top: 3px solid var(--primary);">
+            <h5 style="margin: 0 0 0.5rem; color: var(--primary);">Data Engineering</h5>
+            <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">Clean, prepare, and transform data</p>
+        </div>
+        <div style="padding: 1rem; background: var(--bg-light); border-radius: 8px; border-top: 3px solid var(--primary);">
+            <h5 style="margin: 0 0 0.5rem; color: var(--primary);">Model Engineering</h5>
+            <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">Build and train machine learning models</p>
+        </div>
+        <div style="padding: 1rem; background: var(--bg-light); border-radius: 8px; border-top: 3px solid var(--primary);">
+            <h5 style="margin: 0 0 0.5rem; color: var(--primary);">Model Evaluation</h5>
+            <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">Assess performance and reliability</p>
+        </div>
+        <div style="padding: 1rem; background: var(--bg-light); border-radius: 8px; border-top: 3px solid var(--primary);">
+            <h5 style="margin: 0 0 0.5rem; color: var(--primary);">Deployment</h5>
+            <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">Release and monitor in production</p>
+        </div>
+    </div>
+
+    <p style="margin-top: 1.5rem; color: var(--text-muted);">
+        This systematic approach ensures reproducibility, quality, and continuous improvement of the prediction system. Learn more about the methodology by visiting the <a href="/modelo" style="color: var(--primary); text-decoration: none; font-weight: 700;">Methodology page</a>.
+    </p>
+</section>
+
+<!-- PERFORMANCE SUMMARY -->
+<section class="card" style="background: linear-gradient(135deg, rgba(244, 197, 66, 0.05), rgba(244, 197, 66, 0.02)); border-color: var(--secondary);">
+    <h2 style="color: var(--primary);">Model Performance Summary</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin: 1.5rem 0;">
+        <div style="padding: 1rem; background: rgba(255, 255, 255, 0.5); border-radius: 8px; text-align: center;">
+            <div style="font-size: 1.8rem; font-weight: 800; color: var(--primary);">0.87</div>
+            <div style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">R² Score</div>
+        </div>
+        <div style="padding: 1rem; background: rgba(255, 255, 255, 0.5); border-radius: 8px; text-align: center;">
+            <div style="font-size: 1.8rem; font-weight: 800; color: var(--primary);">18.2</div>
+            <div style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">RMSE</div>
+        </div>
+        <div style="padding: 1rem; background: rgba(255, 255, 255, 0.5); border-radius: 8px; text-align: center;">
+            <div style="font-size: 1.8rem; font-weight: 800; color: var(--primary);">14.5</div>
+            <div style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">MAE</div>
+        </div>
+        <div style="padding: 1rem; background: rgba(255, 255, 255, 0.5); border-radius: 8px; text-align: center;">
+            <div style="font-size: 1.8rem; font-weight: 800; color: var(--primary);">12.3%</div>
+            <div style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">MAPE</div>
+        </div>
+    </div>
+    <p style="margin: 0; color: var(--text-muted);">
+        The Random Forest model achieves strong predictive performance with high cross-validation consistency. Detailed evaluation metrics are available on the <a href="/evaluacion" style="color: var(--primary); text-decoration: none; font-weight: 700;">Evaluation page</a>.
+    </p>
+</section>
+
+<!-- REPOSITORY & RESOURCES -->
+<section class="card">
+    <h2>Resources & Links</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+        <div style="padding: 1.5rem; background: var(--bg-light); border-radius: 10px;">
+            <h4 style="margin-top: 0; color: var(--primary);">GitHub Repository</h4>
+            <p style="margin: 0.5rem 0 1rem; color: var(--text-muted);">Access the complete source code and documentation.</p>
+            <a href="https://github.com/LuisaMendez012/ProjectMachine" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline">
+                View on GitHub
+            </a>
+        </div>
+        <div style="padding: 1.5rem; background: var(--bg-light); border-radius: 10px;">
+            <h4 style="margin-top: 0; color: var(--primary);">Live Application</h4>
+            <p style="margin: 0.5rem 0 1rem; color: var(--text-muted);">This application is deployed on Render cloud hosting.</p>
+            <p style="margin: 0; font-size: 0.85rem; color: var(--text-muted);">
+                Hosted on <strong>Render.com</strong>
+
+            </p>
+        </div>
+        <div style="padding: 1.5rem; background: var(--bg-light); border-radius: 10px;">
+            <h4 style="margin-top: 0; color: var(--primary);">Location</h4>
+            <p style="margin: 0.5rem 0 1rem; color: var(--text-muted);">Focus: Bogotá, Colombia urban mobility</p>
+            <p style="margin: 0; font-size: 0.85rem; color: var(--text-muted);">
+                <strong>Bogotá, Colombia</strong> — Smart City Application
+
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section style="text-align: center; margin-top: 3rem;">
+    <h2>Try the Prediction System</h2>
+    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Get started with real-time occupancy predictions powered by machine learning.</p>
+    <a href="/prediction" class="btn btn-primary btn-lg">Make a Prediction Now</a>
+</section>
+
+{% endblock %}
