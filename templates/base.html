@@ -10,14 +10,30 @@
 <body>
     <div class="page-shell">
         <header class="site-header">
-            <div class="brand">Bike Parking Occupancy</div>
-            <nav class="main-nav">
-                <a href="/" class="{{ 'active' if active_page == 'home' else '' }}">Home</a>
-                <a href="/modelo" class="{{ 'active' if active_page == 'model' else '' }}">Model</a>
-                <a href="/evaluacion" class="{{ 'active' if active_page == 'evaluation' else '' }}">Evaluation</a>
-                <a href="/prediction" class="{{ 'active' if active_page == 'prediction' else '' }}">Prediction System</a>
-                <a href="/rl" class="{{ 'active' if active_page == 'rl' else '' }}">Reinforcement Learning</a>
-            </nav>
+            <div class="header-inner">
+                <div class="brand">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M5 16a3 3 0 100 6 3 3 0 000-6zm14 0a3 3 0 100 6 3 3 0 000-6z" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M5 19h5l3-7" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="brand-text">CyclePredict Bogotá</span>
+                </div>
+
+                <button id="navToggle" class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+
+                <nav class="main-nav" role="navigation">
+                    <a href="/" class="{{ 'active' if active_page == 'home' else '' }}">Home</a>
+                    <a href="/prediction" class="nav-cta {{ 'active' if active_page == 'prediction' else '' }}">Prediction System</a>
+                    <a href="/about#methodology" class="{{ 'active' if active_page == 'about' else '' }}">Methodology</a>
+                    <a href="/model" class="{{ 'active' if active_page == 'model' else '' }}">Model Engineering</a>
+                    <a href="/evaluation" class="{{ 'active' if active_page == 'evaluation' else '' }}">Model Evaluation</a>
+                    <a href="/about" class="{{ 'active' if active_page == 'about' else '' }}">About Project</a>
+                </nav>
+            </div>
         </header>
 
         <main class="wrapper">
@@ -25,5 +41,16 @@
         </main>
     </div>
     {% block extra_scripts %}{% endblock %}
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const toggle = document.getElementById('navToggle');
+        const nav = document.querySelector('.main-nav');
+        toggle && toggle.addEventListener('click', function () {
+            const open = nav.classList.toggle('open');
+            toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+            toggle.classList.toggle('open');
+        });
+    });
+    </script>
 </body>
 </html>
