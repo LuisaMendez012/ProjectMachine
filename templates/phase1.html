@@ -1,0 +1,263 @@
+{% extends 'base.html' %}
+
+{% block title %}Predict Bicycle Parking Occupancy in Bogotá{% endblock %}
+
+{% block content %}
+
+<!-- HERO SECTION -->
+<section class="hero home-hero">
+    <div class="home-hero-grid">
+        <div class="home-hero-copy">
+            <div class="eyebrow">Smart Mobility — Bogotá</div>
+            <h1>Predict Bicycle Parking Occupancy in Bogotá</h1>
+            <p class="subtitle">AI-powered predictions of bicycle parking demand. Fast, practical insights to support smarter urban mobility.</p>
+            <div class="hero-cta">
+                <a href="/prediction" class="btn btn-primary">Start Prediction</a>
+            </div>
+            <div class="hero-note">Accurate · Weather-aware · Real-time</div>
+        </div>
+
+        <div class="home-hero-visual" aria-hidden="true">
+            <div class="preview-panel">
+                <div class="preview-top">
+                    <div class="preview-meta">
+                        <div class="meta-line">Weather</div>
+                        <div class="meta-value">Moderate Rain</div>
+                    </div>
+                    <div class="preview-meta">
+                        <div class="meta-line">Hour</div>
+                        <div class="meta-value">08:00</div>
+                    </div>
+                </div>
+                <div class="preview-main">
+                    <div class="predicted-label">Predicted Occupancy</div>
+                    <div class="predicted-value">153</div>
+                    <div class="predicted-unit">bicycles</div>
+                </div>
+                <div class="preview-bottom">
+                    <div class="model-chip">Model: <strong>Random Forest</strong></div>
+                    <div class="model-stats">R²: 0.782 · RMSE: 37.21</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- WHY THIS MATTERS -->
+<section id="why-matters" class="section">
+    <div class="section-head">
+        <h2>Why This Project Matters</h2>
+        <p class="text-muted">Short, practical benefits of the prediction system.</p>
+    </div>
+
+    <div class="why-grid">
+        <div class="why-card">
+            <div class="why-icon" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M5 16a3 3 0 100 6 3 3 0 000-6zM19 16a3 3 0 100 6 3 3 0 000-6zM5 19h5l3-7" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h3>Bicycle Mobility Growth</h3>
+            <p>Rising bicycle usage demands smarter parking strategies for a sustainable city.</p>
+        </div>
+
+        <div class="why-card">
+            <div class="why-icon" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M3 13h2l1 4h12l1-4h2" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h3>Weather Impact on Demand</h3>
+            <p>Weather changes strongly influence parking behavior — our model captures those patterns.</p>
+        </div>
+
+        <div class="why-card">
+            <div class="why-icon" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h3>Smart Urban Planning</h3>
+            <p>Accurate forecasts help planners optimize infrastructure and improve citizen experience.</p>
+        </div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works" class="section">
+    <div class="section-head">
+        <h2>How the System Works</h2>
+        <p class="text-muted">A simple three-step flow to get occupancy insights.</p>
+    </div>
+
+    <div class="how-grid">
+        <div class="how-card">
+            <div class="how-step">1</div>
+            <h3>Enter Context Data</h3>
+            <p class="text-muted">Provide location, zone, and time.</p>
+        </div>
+        <div class="how-card">
+            <div class="how-step">2</div>
+            <h3>Predict Occupancy</h3>
+            <p class="text-muted">Models run instantly and return a clear estimate.</p>
+        </div>
+        <div class="how-card">
+            <div class="how-step">3</div>
+            <h3>Get Smart Insights</h3>
+            <p class="text-muted">See prediction, reliability, and short recommendations.</p>
+        </div>
+    </div>
+</section>
+
+<!-- CRISP-ML PREVIEW (compact & secondary) -->
+<section id="quick-access" class="section">
+    <div class="section-head">
+        <h2>CRISP-ML Methodology</h2>
+        <p class="text-muted">Compact overview of the project workflow (for grading).</p>
+    </div>
+
+    <div class="method-compact">
+        <div class="method-card">Business Understanding</div>
+        <div class="method-card">Data Understanding</div>
+        <div class="method-card">Data Engineering</div>
+        <div class="method-card">Model Engineering</div>
+        <div class="method-card">Model Evaluation</div>
+        <div class="method-card">Deployment</div>
+    </div>
+
+    <div style="margin-top:1rem; display:flex; gap:0.75rem;">
+        <a class="btn btn-outline" href="/model">Open Full Methodology</a>
+        <a class="btn btn-outline" href="/evaluation">Open Evaluation</a>
+    </div>
+</section>
+
+<!-- ABOUT (SHORT, LESS OVERLOAD) -->
+<section id="about">
+    <div class="about-grid">
+        <div class="about-card">
+            <h2>About the Project</h2>
+            <p>
+                This Smart City platform uses Machine Learning to estimate bicycle parking occupancy across zones in Bogotá.
+                Temporal patterns, weather conditions, and location signals are combined to produce actionable forecasts.
+            </p>
+            <div class="about-pills">
+                <span class="pill">CRISP-ML methodology</span>
+                <span class="pill">Cross-validation</span>
+                <span class="pill">Flask deployment</span>
+            </div>
+        </div>
+
+        <div class="about-card about-stats">
+            <div class="stat">
+                <div class="stat-label">Models</div>
+                <div class="stat-value">Linear, Random Forest, K-Means</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Signals</div>
+                <div class="stat-value">Weather + time + zone</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Deployment</div>
+                <div class="stat-value">Flask Web Application</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- METHODOLOGY (TIMELINE + COLLAPSIBLE) -->
+<section id="methodology">
+    <div class="section-head">
+        <h2>CRISP-ML Methodology (Designed for Clarity)</h2>
+        <p class="text-muted">No long paragraphs—just a structured timeline you can scan.</p>
+    </div>
+
+    <div class="timeline">
+        <div class="timeline-item">
+            <div class="timeline-bullet">1</div>
+            <div class="timeline-content">
+                <div class="timeline-title">Business Understanding</div>
+                <p class="text-muted">Define the goal: estimate bicycle parking occupancy for better mobility decisions.</p>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-bullet">2</div>
+            <div class="timeline-content">
+                <div class="timeline-title">Data Understanding</div>
+                <p class="text-muted">Identify patterns across time, zone, and weather conditions.</p>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-bullet">3</div>
+            <div class="timeline-content">
+                <div class="timeline-title">Data Engineering</div>
+                <p class="text-muted">Clean and transform signals to support stable training and evaluation.</p>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-bullet">4</div>
+            <div class="timeline-content">
+                <div class="timeline-title">Model Engineering</div>
+                <p class="text-muted">Train and compare models to find strong generalization on unseen data.</p>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-bullet">5</div>
+            <div class="timeline-content">
+                <div class="timeline-title">Model Evaluation</div>
+                <p class="text-muted">Quantify error with metrics and cross-validation.</p>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-bullet">6</div>
+            <div class="timeline-content">
+                <div class="timeline-title">Deployment</div>
+                <p class="text-muted">Expose the predictive system through the Flask interface.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion" role="region" aria-label="CRISP-ML details">
+        <button class="accordion-btn" type="button" aria-expanded="false" data-acc="1">Business Understanding</button>
+        <div class="accordion-panel" hidden>
+            <p class="text-muted">We frame the problem as a regression task to estimate occupancy and support planning choices across Bogotá zones.</p>
+        </div>
+
+        <button class="accordion-btn" type="button" aria-expanded="false" data-acc="2">Data Engineering</button>
+        <div class="accordion-panel" hidden>
+            <p class="text-muted">We prepare the dataset to ensure consistent inputs for training, reducing noise and improving reliability.</p>
+        </div>
+
+        <button class="accordion-btn" type="button" aria-expanded="false" data-acc="3">Model Engineering</button>
+        <div class="accordion-panel" hidden>
+            <p class="text-muted">We evaluate multiple machine learning approaches and select the best performing model based on evaluation results.</p>
+        </div>
+
+        <button class="accordion-btn" type="button" aria-expanded="false" data-acc="4">Evaluation & Deployment</button>
+        <div class="accordion-panel" hidden>
+            <p class="text-muted">Performance metrics and cross-validation confirm generalization, and the system is deployed using Flask.</p>
+        </div>
+    </div>
+
+    <div class="methodology-cta">
+        <a class="btn btn-primary" href="/model">Open Full Methodology</a>
+        <a class="btn btn-light" href="/evaluation">Open Evaluation Dashboard</a>
+    </div>
+</section>
+
+<script>
+    (function () {
+        const accBtns = document.querySelectorAll('.accordion-btn');
+        accBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const panel = btn.nextElementSibling;
+                const isOpen = btn.getAttribute('aria-expanded') === 'true';
+
+                accBtns.forEach(b => {
+                    b.setAttribute('aria-expanded', 'false');
+                    const p = b.nextElementSibling;
+                    if (p) p.hidden = true;
+                });
+
+                btn.setAttribute('aria-expanded', String(!isOpen));
+                if (panel) panel.hidden = isOpen;
+            });
+        });
+    })();
+</script>
+
+{% endblock %}
+
