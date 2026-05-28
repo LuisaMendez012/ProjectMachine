@@ -154,29 +154,33 @@ def prediction():
             lugar_input = request.form.get('lugar')
             zona = request.form.get('zona')
 
+            print("INPUT RAW:", lugar_input, zona)
+
             if not lugar_input or not zona:
                 error = "Debes ingresar todos los campos"
             else:
-                # limpiar ciudad
                 lugar_limpio = limpiar_ciudad(lugar_input)
 
                 if lugar_limpio in CIUDADES:
                     lugar = CIUDADES[lugar_limpio]
                 else:
-                    lugar = "Bogota"  # fallback seguro
+                    lugar = "Bogota"
 
-                print('DEBUG INPUT:', lugar, zona)
+                print("LUGAR FINAL:", lugar)
 
                 try:
-                    pred = predict_auto(lugar.strip(), float(zona))
-                    print('RESULT:', pred)
+                    pred = predict_auto(lugar, float(zona))
+                    print("PRED OK:", pred)
+
                 except Exception as e:
-                    print("ERROR PREDICCION:", e)
-                    error = "Error al hacer la predicción"
+                    import traceback
+                    traceback.print_exc()   # 🔥 ESTO ES LO IMPORTANTE
+                    error = f"Error interno: {str(e)}"
 
         except Exception as e:
-            error = str(e)
-            print('ERROR GENERAL:', error)
+            import traceback
+            traceback.print_exc()
+            error = f"Error general: {str(e)}"
 
     return render_template('prediction.html', pred=pred, error=error)
 
