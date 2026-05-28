@@ -4,55 +4,157 @@
     <meta charset="UTF-8">
     <title>Bike Parking Prediction</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 25px;
+            background: #1e293b;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.4);
+        }
+
+        h1, h3 {
+            text-align: center;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: none;
+            margin-top: 5px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #22c55e;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .btn:hover {
+            background: #16a34a;
+        }
+
+        .result-box {
+            margin-top: 20px;
+            padding: 15px;
+            background: #020617;
+            border-left: 5px solid #22c55e;
+            border-radius: 8px;
+        }
+
+        .error-box {
+            margin-top: 20px;
+            padding: 15px;
+            background: #7f1d1d;
+            border-left: 5px solid #ef4444;
+            border-radius: 8px;
+        }
+
+        small {
+            color: #94a3b8;
+        }
+    </style>
 </head>
+
 <body>
 
-    <div class="container">
-        <h1>🚲 Bike Parking Occupancy Prediction</h1>
+<div class="container">
 
-        <p>
-            This system predicts the occupancy of bike parking spaces based on 
-            real-time weather conditions and time automatically.
-        </p>
+    <h1>🚲 Bike Parking Occupancy Prediction</h1>
 
-        <hr>
+    <p style="text-align:center;">
+        Predict bike parking occupancy based on weather and time automatically.
+    </p>
 
-        <h3>🚀 Automatic Prediction</h3>
+    <hr>
 
-        <form method="POST" action="/prediction" class="input-group">
+    <h3>🚀 Automatic Prediction</h3>
 
-            <label for="lugar">📍 Location</label>
-            <input type="text" name="lugar" id="lugar" placeholder="Ej: Bogota" required>
-            <small class="input-hint">Enter the location (example: Bogota).</small>
+    <form method="POST" action="/prediction" onsubmit="return validarFormulario()">
 
-            <br><br>
+        <!-- LOCATION -->
+        <label for="lugar">📍 Location</label>
+        <input 
+            type="text" 
+            name="lugar" 
+            id="lugar" 
+            placeholder="Ej: Bogota" 
+            required
+            minlength="2"
+        >
+        <small>Examples: Bogota, Medellin, Cali</small>
 
-            <label for="zona">🗺️ Zone</label>
-            <select name="zona" id="zona" required>
-                <option value="1">North</option>
-                <option value="2">Center</option>
-                <option value="3">South</option>
-                <option value="4">Other</option>
-            </select>
-            <small class="input-hint">Select the zone of the city.</small>
+        <br><br>
 
-            <br><br>
+        <!-- ZONE -->
+        <label for="zona">🗺️ Zone</label>
+        <select name="zona" id="zona" required>
+            <option value="">-- Select zone --</option>
+            <option value="1">North</option>
+            <option value="2">Center</option>
+            <option value="3">South</option>
+            <option value="4">Other</option>
+        </select>
 
-            <button type="submit" class="btn btn-primary">
-                🔥 Predict Occupancy
+        <small>Select the zone of the city.</small>
 
-        </form>
+        <br><br>
 
-        <hr>
+        <!-- BUTTON -->
+        <button type="submit" class="btn">
+            🔥 Predict Occupancy
+        </button>
 
-        {% if pred %}
-            <div class="result-box">
-                <h3>📊 Prediction Result</h3>
-                <p><strong>{{ pred }}</strong> bicycles (estimated occupancy)</p>
-            </div>
-        {% endif %}
+    </form>
 
-    </div>
+    <hr>
+
+    <!-- ERROR -->
+    {% if error %}
+        <div class="error-box">
+            <h3>⚠️ Error</h3>
+            <p>{{ error }}</p>
+        </div>
+    {% endif %}
+
+    <!-- RESULT -->
+    {% if pred %}
+        <div class="result-box">
+            <h3>📊 Prediction Result</h3>
+            <p><strong>{{ pred }}</strong> bicycles (estimated occupancy)</p>
+        </div>
+    {% endif %}
+
+</div>
+
+<!-- VALIDACIÓN JS -->
+<script>
+function validarFormulario() {
+    let ciudad = document.getElementById("lugar").value.trim();
+
+    if (ciudad.length < 2) {
+        alert("⚠️ Ingresa una ciudad válida");
+        return false;
+    }
+
+    return true;
+}
+</script>
 
 </body>
 </html>

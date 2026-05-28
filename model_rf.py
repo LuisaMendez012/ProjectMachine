@@ -57,28 +57,37 @@ def predict_rf(clima, hora, zona, model=None):
 
 
 def predict_auto(lugar, zona):
-    
-    # ⏰ hora automática
+    from datetime import datetime
+    import requests
+
     hora = datetime.now().hour
 
-    # 🌦️ clima desde API (temporal simple)
     try:
         url = f"https://api.openweathermap.org/data/2.5/weather?q={lugar}&appid=9fff9f0d02f0876e9b331bb4433f2d07&units=metric"
-        response = requests.get(url).json()
+        response = requests.get(url, timeout=5)
 
-        temperatura = response["main"]["temp"]
-
-        # lógica simple de clima
-        if "rain" in response:
-            clima = 3
-        else:
+        if response.status_code != 200:
+            print("API error:", response.text)
             clima = 1
+        else:
+            data = response.json()
 
-    except:
-        # fallback si falla API
+            if "weather" not in data:
+                clima = 1
+            else:
+                weather_main = data["weather"][0]["main"].lower()
+
+                if "rain" in weather_main:
+                    clima = 3
+                elif "cloud" in weather_main:
+                    clima = 2
+                else:
+                    clima = 1
+
+    except Exception as e:
+        print("Error clima:", e)
         clima = 1
 
-    # 🤖 usar tu modelo existente
     return predict_rf(clima, hora, zona)
 
 

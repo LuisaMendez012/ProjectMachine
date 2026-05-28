@@ -15,6 +15,20 @@ from model_kmeans import run_kmeans, plot_cluster_counts
 import os
 import math
 import statistics
+import unicodedata
+
+def limpiar_ciudad(texto):
+    texto = texto.strip().lower()
+    texto = unicodedata.normalize('NFD', texto)
+    texto = ''.join(c for c in texto if unicodedata.category(c) != 'Mn')
+    return texto
+
+CIUDADES = {
+    "bogota": "Bogota",
+    "medellin": "Medellin",
+    "cali": "Cali",
+    "barranquilla": "Barranquilla"
+}
 
 app = Flask(__name__)
 
@@ -132,26 +146,39 @@ def fase3():
 # ==============================
 @app.route('/prediction', methods=['GET', 'POST'])
 def prediction():
+    pred = None
     error = None
-    resultado = None
 
     if request.method == 'POST':
         try:
-            lugar = request.form.get('lugar')
+            lugar_input = request.form.get('lugar')
             zona = request.form.get('zona')
 
-            print('DEBUG INPUT:', lugar, zona)
-
-            if not lugar or not zona:
-                error = 'Missing data'
+            if not lugar_input or not zona:
+                error = "Debes ingresar todos los campos"
             else:
-                resultado = predict_auto(lugar, float(zona))
-                print('RESULT:', resultado)
+                # limpiar ciudad
+                lugar_limpio = limpiar_ciudad(lugar_input)
+
+                if lugar_limpio in CIUDADES:
+                    lugar = CIUDADES[lugar_limpio]
+                else:
+                    lugar = "Bogota"  # fallback seguro
+
+                print('DEBUG INPUT:', lugar, zona)
+
+                try:
+                    pred = predict_auto(lugar.strip(), float(zona))
+                    print('RESULT:', pred)
+                except Exception as e:
+                    print("ERROR PREDICCION:", e)
+                    error = "Error al hacer la predicción"
+
         except Exception as e:
             error = str(e)
-            print('ERROR:', error)
+            print('ERROR GENERAL:', error)
 
-    return render_template('prediction.html', resultado=resultado, error=error)
+    return render_template('prediction.html', pred=pred, error=error)
 
 
 # ==============================
